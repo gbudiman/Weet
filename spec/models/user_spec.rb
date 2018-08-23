@@ -59,4 +59,28 @@ RSpec.describe User, type: :model do
       expect(user.karma_fill_time).to be > (Time.now + 1.day - 1.minute)
     end
   end
+
+  context 'karma refill' do
+    before :each do
+      @user = User.find(@user.id)
+      @user.update(karma: 0)
+    end
+
+    it 'should not be executed before set date' do
+      dummy_fill = Time.now + 1.hour
+      @user.update(karma_fill_time: dummy_fill)
+      @user.refill_karma!
+      expect(@user.karma).to eq 0
+
+      expect(@user.karma_fill_time).to eq dummy_fill
+    end
+
+    it 'should be executed after set date' do
+      @user.update(karma_fill_time: Time.now - 1.hour)
+      @user.refill_karma!
+
+      expect(@user.karma).to eq 20
+      expect(@user.karma_fill_time).to eq nil
+    end
+  end
 end

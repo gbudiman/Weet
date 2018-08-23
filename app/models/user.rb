@@ -58,4 +58,13 @@ class User < ApplicationRecord
     end
     self.save!
   end
+
+  def refill_karma!
+    if Time.now > self.karma_fill_time
+      self.karma = self.karma + 20
+      self.karma_fill_time = nil
+    end
+
+    self.save!
+  end
 end
