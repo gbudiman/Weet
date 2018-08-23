@@ -41,8 +41,10 @@ contract('WeetFactory', async(accounts) => {
         let r = await instance.get_weet.call(weet.weet_id, { from: dummy })
         let cs = await instance.validate_weet.call(weet.weet_id, weet.weeter_id, weet.timestamp, weet.weet, { from: dummy })
         let content = r[2]
+        let is_published = r[3]
         assert(content, weet.weet)
         assert(cs, true)
+        assert(!is_published)
       }
     })
 
@@ -69,6 +71,44 @@ contract('WeetFactory', async(accounts) => {
 
       let rt = await instance.get_weet.call(weet.weet_id)
       assert(await rt[2], original)
+    })
+
+    it('should publish weet correctly', async() => {
+      let weet = weets[0]
+      await instance.publish_weet(weet.weet_id, weet.weeter_id, weet.timestamp, weet.weet, { from: admin })
+
+      let cweet = await instance.get_weet.call(weet.weet_id)
+      let is_published = cweet[3]
+      assert(is_published)
+    })
+
+    it('should reject publishing from non-admin', async() => {
+      let weet = weets[0]
+
+      try {
+        await instance.publish_weet(weet.weet_id, weet.weeter_id, weet.timestamp, weet.weet, { from: dummy })
+      } catch(error) {
+
+      }
+
+      let cweet = await instance.get_weet.call(weet.weet_id)
+      let is_published = cweet[3]
+      assert(!is_published)
+    })
+
+    it('should reject publishing corrupted weet', async() => {
+      let weet = weets[0]
+      weet.weet = 'garbled'
+
+      try {
+        await instance.publish_weet(weet.weet_id, weet.weeter_id, weet.timestamp, weet.weet, { from: admin })
+      } catch(error) {
+
+      }
+
+      let cweet = await instance.get_weet.call(weet.weet_id)
+      let is_published = cweet[3]
+      assert(!is_published)
     })
   })
 })
