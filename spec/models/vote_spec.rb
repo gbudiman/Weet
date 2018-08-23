@@ -19,6 +19,7 @@ RSpec.describe Vote, type: :model do
       user.upvote weet_id: @weet.id
     end
 
+    @weet.update(evaluate_at: Time.now - 1.minute)
     @weet.evaluate!
     expect(@weet.is_evaluated).to eq true
     expect(@weet.is_published).to eq true
@@ -39,6 +40,7 @@ RSpec.describe Vote, type: :model do
       user.downvote weet_id: @weet.id
     end
 
+    @weet.update(evaluate_at: Time.now - 1.minute)
     @weet.evaluate!
     expect(@weet.is_evaluated).to eq true
     expect(@weet.is_published).to eq false
@@ -46,6 +48,13 @@ RSpec.describe Vote, type: :model do
     @users[1..3].each do |user|
       expect(User.find(user.id).karma).to eq(@karma_cache[user.id] - 10)
     end
+  end
+
+  it 'should reject vote on evaluated weet' do
+    @weet.update(evaluate_at: Time.now - 2.minute)
+    expect do
+      @users[1].upvote weet_id: @weet.id
+    end.to raise_error(RuntimeError, /Voting period has ended/)
   end
 
   it 'should reject self-vote' do
