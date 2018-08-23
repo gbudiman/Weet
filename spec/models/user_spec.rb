@@ -36,6 +36,21 @@ RSpec.describe User, type: :model do
       expect(user.winning_streak).to eq 1
       expect(user.karma).to eq(init_karma + 70)
     end
+
+    it 'should clear karma fill time' do
+      @user.karma = 10
+      @user.lose!
+      @user.save!
+
+      expect(@user.karma).to eq 0
+      expect(@user.karma_fill_time).to be > (Time.now + 1.day - 1.minute)
+
+      @user.win!
+      @user.win!
+      expect(@user.karma).to eq 20
+      expect(@user.karma_fill_time).to eq nil
+
+    end
   end
 
   context 'losing' do

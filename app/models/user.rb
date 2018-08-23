@@ -47,6 +47,10 @@ class User < ApplicationRecord
       self.winning_streak = 0
     end 
 
+    if self.karma > 0
+      self.karma_fill_time = nil
+    end
+
     self.save!
   end
 
