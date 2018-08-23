@@ -24,4 +24,22 @@ class User < ApplicationRecord
       User.where(name: 'admin').first.admin!
     end
   end
+
+  def win!
+    self.winning_streak = self.winning_streak + 1
+    case self.winning_streak
+    when 2
+      self.karma = self.karma + 20
+    when 3
+      self.karma = self.karma + 50
+      self.winning_streak = 0
+    end 
+
+    self.save!
+  end
+
+  def lose!
+    self.karma = self.karma - 10
+    self.save!
+  end
 end
