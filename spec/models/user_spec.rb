@@ -49,5 +49,14 @@ RSpec.describe User, type: :model do
         expect(user.karma).to eq(current_karma - 10)
       end
     end
+
+    it 'should assign karma refill time when losing to zero karma' do
+      user = User.find(@user.id)
+      user.update(karma: 10)
+
+      user.lose!
+      expect(user.karma).to eq 0
+      expect(user.karma_fill_time).to be > (Time.now + 1.day - 1.minute)
+    end
   end
 end

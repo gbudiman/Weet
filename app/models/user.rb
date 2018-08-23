@@ -29,6 +29,14 @@ class User < ApplicationRecord
     Weeet.create content: content, user_id: self.id
   end
 
+  def upvote weet_id:
+    Weeet.find(weet_id).vote up: true, by: self.id
+  end
+
+  def downvote weet_id:
+    Weeet.find(weet_id).vote up: false, by: self.id
+  end
+
   def win!
     self.winning_streak = self.winning_streak + 1
     case self.winning_streak
@@ -44,6 +52,10 @@ class User < ApplicationRecord
 
   def lose!
     self.karma = self.karma - 10
+
+    if self.karma == 0
+      self.karma_fill_time = Time.now + 1.day
+    end
     self.save!
   end
 end

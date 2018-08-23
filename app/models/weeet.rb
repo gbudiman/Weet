@@ -7,4 +7,10 @@ class Weeet < ApplicationRecord
     self.is_published = true
     self.save!
   end
+
+  def vote up: true, by:
+    Vote.create weet_id: self.id,
+                user_id: by,
+                voteup: up
+  end
 end
