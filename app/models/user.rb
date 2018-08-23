@@ -25,6 +25,10 @@ class User < ApplicationRecord
     end
   end
 
+  def weet! content:
+    Weeet.create content: content, user_id: self.id
+  end
+
   def win!
     self.winning_streak = self.winning_streak + 1
     case self.winning_streak
