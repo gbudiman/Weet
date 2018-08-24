@@ -115,6 +115,13 @@ body {
   }
 }
 
+.border {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  height: 128px;
+}
+
 @media screen and (max-width: 991px) {
   .weet-container {
     width: 90vw;

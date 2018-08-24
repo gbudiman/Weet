@@ -4,7 +4,7 @@ class WeeetController < ApplicationController
   
   def fetch
     render json: (Weeet.fetch limit: (params[:limit] || 5).to_i,
-                              from: params[:from] || Time.now)
+                              from: (params[:from] || -1).to_i)
   end
 
   def get_votes
