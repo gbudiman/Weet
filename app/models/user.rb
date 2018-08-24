@@ -6,6 +6,7 @@ class User < ApplicationRecord
   has_many :votes
 
   def self.seed
+    users = Array.new
     seeds = ['admin']
     9.times do |i|
       seeds.push "user#{i}"
@@ -20,10 +21,13 @@ class User < ApplicationRecord
         u.password = seed
         u.password_confirmation = seed
         u.save!
+        users.push u
       end
 
       User.where(name: 'admin').first.admin!
     end
+
+    return users
   end
 
   def weet! content:
