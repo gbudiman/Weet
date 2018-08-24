@@ -7,6 +7,9 @@ $gray-light: #ccc;
 $off-white: #eee;
 $black: #333;
 
+$vote-underlay: rgba(68, 143, 48, 0.25);
+$vote-remainder: rgba(68, 143, 48, 0.8);
+
 body {
   font-family: 'Exo'
 }
@@ -39,6 +42,10 @@ body {
     .weet-date {
       text-align: right;
       color: $gray-dark;
+    }
+
+    .blockchain-persisted {
+      padding-left: 8px;
     }
   }
 
@@ -73,19 +80,22 @@ body {
       line-height: 36px;
       padding-left: 0px;
       padding-right: 0px;
+      background-color: $vote-underlay;
 
       .timer-bar {
-        background-color: green;
+        background-color: $vote-remainder;
         height: 36px;
         margin-top: 0px;
         position: absolute;
         width: 100%;
         z-index: 10;
       }
-      .timer {
+
+      .timer-text {
         position: relative;
         margin-top: 8px;
         z-index: 11;
+        color: white;
       }
     }
 

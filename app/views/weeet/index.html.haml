@@ -1,6 +1,7 @@
 %div{id: 'weet-template', class: 'weet-container', 'data-id': -1}
   %div{class: 'weet-header'}
     %span{class: 'weet-author'} Author
+    %span{class: 'blockchain-persisted glyphicon glyphicon-link pull-right start-hidden', 'data-bcp-toggle': 'tooltipe', title: 'Blockchain-persisted'} 
     %span{class: 'weet-date pull-right'} Date
   %div{class: 'weet-body'}
     Hi this is post body
@@ -14,7 +15,7 @@
     %div{class: 'col-xs-8 slider'}
     %div{class: 'col-xs-2 timer-container start-hidden', 'data-vote-remainder-toggle': 'tooltip', title: 'Voting time remaining'}
       %div{class: 'timer-bar'}
-      %span{class: 'timer'} 35:11
+      %span{class: 'timer-text'}
     %div{class: 'col-xs-2 approve-status weet-approved start-hidden'}
       %span{class: 'glyphicon glyphicon-ok'} 
       Approved
