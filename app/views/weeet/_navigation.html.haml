@@ -1,0 +1,20 @@
+%nav{class: 'navbar navbar-default'}
+  %div{class: 'container'}
+    %div{class: 'navbar-header'}
+      %a{class: 'navbar-brand', href: '/'} Weet
+    %ul{class: 'nav navbar-nav navbar-right'}
+      %li
+        %a{href: '#'} Sign In
+      %li
+        %a{href: '#'} Sign Up
+      %li{class: 'only-logged-in karma-hover', 'data-toggle': 'tooltip', 'data-placement': 'bottom'}
+        %a{href: '#', class: 'not-clickable'}
+          %span{class: 'glyphicon glyphicon-heart'} 
+          %span{id: 'karma-amount'} 0
+      %li{class: 'only-logged-in'}
+        %a{href: '#', class: 'not-clickable'} User Name
+      %li{class: 'only-logged-in signout-hover', 'data-toggle': 'tooltip', 'data-placement': 'bottom', title: 'Sign Out'}
+        %a{href: '#'}
+          %span{class: 'glyphicon glyphicon-off'}
+
+

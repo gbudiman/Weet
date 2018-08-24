@@ -1,3 +1,122 @@
 // Place all the styles related to the Weeet controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+$gray-dark: #888;
+$gray-light: #ccc;
+$off-white: #eee;
+$black: #333;
+
+body {
+  font-family: 'Exo'
+}
+
+.start-hidden {
+  display: none;
+}
+
+.weet-container {
+  width: 100vw;
+  max-width: 928px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid $gray-light;
+  border-radius: 4px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+
+
+  .weet-header {
+    background-color: $off-white;
+    border-bottom: 1px solid $gray-light;
+    padding: 8px 8px 6px 8px;
+
+    .weet-author {
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .weet-date {
+      text-align: right;
+      color: $gray-dark;
+    }
+  }
+
+  .weet-body {
+    padding: 8px;
+  }
+
+  .weet-footer {
+    background-color: $off-white;
+    border-top: 1px solid $gray-light;
+
+    .vote {
+      padding: 8px;
+      text-align: center;
+      border-right: 1px solid $gray-light;
+    }
+
+    .vote.enabled {
+      cursor: pointer;
+      &:hover {
+        background-color: white;
+      }
+    }
+
+    .vote.disabled {
+      color: $gray-light;
+    }
+
+    .timer-container {
+      text-align: center;
+      height: 36px;
+      line-height: 36px;
+      padding-left: 0px;
+      padding-right: 0px;
+
+      .timer-bar {
+        background-color: green;
+        height: 36px;
+        margin-top: 0px;
+        position: absolute;
+        width: 100%;
+        z-index: 10;
+      }
+      .timer {
+        position: relative;
+        margin-top: 8px;
+        z-index: 11;
+      }
+    }
+
+    .approve-status {
+      padding: 8px;
+      color: white;
+      text-align: center;
+    }
+
+    .approve-status.weet-approved {
+      background-color: green;
+    }
+
+    .approve-status.weet-rejected {
+      background-color: red;
+    }
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .weet-container {
+    width: 90vw;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .weet-container {
+    .weet-header {
+      .weet-date {
+        text-align: left;
+      }
+    }
+  }
+}
