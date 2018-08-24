@@ -90,4 +90,13 @@ RSpec.describe Vote, type: :model do
       user.upvote weet_id: weets[-1].id
     end.to raise_error(RuntimeError, 'Insufficient pending karma')
   end
+
+  it 'should disallow double-vote' do
+    user = @users[5]
+    user.upvote weet_id: @weet.id
+
+    expect do
+      user.upvote weet_id: @weet.id
+    end.to raise_error(ActiveRecord::RecordNotUnique)
+  end
 end

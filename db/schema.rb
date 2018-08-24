@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_24_002931) do
+ActiveRecord::Schema.define(version: 2018_08_24_003910) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 2018_08_24_002931) do
     t.boolean "voteup", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id", "weeet_id"], name: "index_votes_on_user_id_and_weeet_id", unique: true
     t.index ["user_id"], name: "index_votes_on_user_id"
     t.index ["weeet_id"], name: "index_votes_on_weeet_id"
   end
