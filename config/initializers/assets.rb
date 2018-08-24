@@ -13,4 +13,5 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 # folder are already added.
 Rails.application.config.assets.precompile += %w( heartbeat.js
                                                   layout.js
+                                                  weet_cloner.js
                                                   weeet.scss )

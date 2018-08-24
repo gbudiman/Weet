@@ -7,8 +7,8 @@ $gray-light: #ccc;
 $off-white: #eee;
 $black: #333;
 
-$vote-underlay: rgba(68, 143, 48, 0.25);
-$vote-remainder: rgba(68, 143, 48, 0.8);
+$vote-underlay: rgba(68, 143, 48, 0.1);
+$vote-remainder: rgba(68, 143, 48, 0.25);
 
 body {
   font-family: 'Exo'
@@ -95,7 +95,7 @@ body {
         position: relative;
         margin-top: 8px;
         z-index: 11;
-        color: white;
+        color: $black;
       }
     }
 

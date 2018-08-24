@@ -1,6 +1,7 @@
-%div{id: 'weet-template', class: 'weet-container', 'data-id': -1}
+%div{id: 'weet-template', class: 'weet-container start-hidden', 'data-id': -1}
   %div{class: 'weet-header'}
-    %span{class: 'weet-author'} Author
+    %span{class: 'weet-author'} 
+      %a{href: '#'} Author
     %span{class: 'blockchain-persisted glyphicon glyphicon-link pull-right start-hidden', 'data-bcp-toggle': 'tooltipe', title: 'Blockchain-persisted'} 
     %span{class: 'weet-date pull-right'} Date
   %div{class: 'weet-body'}
@@ -24,11 +25,19 @@
       Rejected
     %div{class: 'row'}
 
+%div{class: 'feed', id: 'feed'}
+%div{class: 'border'}
+
 
 = stylesheet_link_tag 'weeet'
 
 :javascript
+  let scripts_loaded = false
   $(document).on('turbolinks:load', function() {
-    layout.init()
+    if (!scripts_loaded) {
+      layout.init()
+      weet_cloner.init()
+      scripts_loaded = true
+    }
   })
   

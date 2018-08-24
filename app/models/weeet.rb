@@ -30,10 +30,12 @@ class Weeet < ApplicationRecord
                 .order('weeets.created_at DESC')
                 .select('weeets.id AS id',
                         'weeets.content AS weet_content',
+                        'weeets.created_at AS weet_created_at',
                         'users.id AS weeter_id',
                         'users.name AS weeter_name',
                         'users.email AS weeter_email',
                         'weeets.evaluate_at AS weet_evaluate_at',
+                        'weeets.is_evaluated AS weet_is_evaluated',
                         'weeets.is_published AS weet_is_published')
 
   end

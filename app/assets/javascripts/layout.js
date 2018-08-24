@@ -25,6 +25,7 @@ var layout = function() {
     let val = (_val == undefined) ? true : _val
     let buttons = obj.find('.vote')
 
+    buttons.attr('data-id=' + id)
     if (val) {
       buttons.removeClass('disabled').addClass('enabled')
       obj.find('[data-vote-toggle="tooltip"]').attr('data-original-title', '')
@@ -46,11 +47,14 @@ var layout = function() {
     obj.find('.blockchain-persisted').show().tooltip()
   }
 
-  var set_content = function(id, author, date, content) {
+  var set_content = function(id, author_id, author, date, content) {
     let obj = get(id)
-    obj.find('.weet-author').text(author)
+    let author_obj = obj.find('.weet-author').find('a')
+
+    author_obj.text(author).attr('href', '/weeter/' + author_id)
     obj.find('.weet-date').text(date)
     obj.find('.weet-body').text(content)
+    enable_tooltips(id)
   }
 
   var set_vote_timer = function(id, until) {
@@ -77,6 +81,9 @@ var layout = function() {
         setTimeout(function() {
           timing_task(obj, until)
         }, 1000)
+      } else {
+        timer_text.text('Calculating...')
+        enable_vote(id, false)
       }
     }
 
@@ -101,8 +108,8 @@ var layout = function() {
   }
 
   var exec_test = function() {
-    enable_tooltips(-1)
-    set_vote_timer(-1, moment().add(55, 'minute'))
+    // enable_tooltips(-1)
+    // set_vote_timer(-1, moment().add(45, 'minutes'))
   }
 
   return {
