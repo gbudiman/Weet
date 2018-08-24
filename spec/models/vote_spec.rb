@@ -72,4 +72,22 @@ RSpec.describe Vote, type: :model do
       user.upvote weet_id: @weet.id
     end.to raise_error(RuntimeError, 'Insufficient karma')
   end
+
+  it 'should reject vote from user that has too many pending votes' do
+    user = @users[5]
+    user.update(karma: 30)
+
+    weets = Array.new
+    4.times do 
+      weets.push @users[4].weet!(content: 'blah')
+    end
+
+    weets[0..2].each do |weet|
+      user.upvote weet_id: weet.id
+    end
+
+    expect do
+      user.upvote weet_id: weets[-1].id
+    end.to raise_error(RuntimeError, 'Insufficient pending karma')
+  end
 end

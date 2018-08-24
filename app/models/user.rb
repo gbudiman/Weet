@@ -3,6 +3,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :rememberable
   enum role: [ :regular, :admin ]
+  has_many :votes
 
   def self.seed
     seeds = ['admin']
@@ -47,9 +48,9 @@ class User < ApplicationRecord
       self.winning_streak = 0
     end 
 
-    if self.karma > 0
-      self.karma_fill_time = nil
-    end
+    # if self.karma > 0
+    #   self.karma_fill_time = nil
+    # end
 
     self.save!
   end

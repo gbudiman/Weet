@@ -15,7 +15,7 @@ class Weeet < ApplicationRecord
       raise RuntimeError, 'Voting period has ended'
     end
 
-    Vote.create weet_id: self.id,
+    Vote.create weeet_id: self.id,
                 user_id: by,
                 voteup: up
   end
@@ -24,7 +24,7 @@ class Weeet < ApplicationRecord
     return if self.is_evaluated 
     return if Time.now < self.evaluate_at
 
-    votes = Vote.where(weet_id: self.id)
+    votes = Vote.where(weeet_id: self.id)
     ups = votes.where(voteup: true)
     downs = votes.where(voteup: false)
 
