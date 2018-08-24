@@ -1,4 +1,7 @@
 class WeeetController < ApplicationController
+  def heartbeat
+  end
+  
   def fetch
     render json: (Weeet.fetch limit: (params[:limit] || 5).to_i,
                               from: params[:from] || Time.now)
