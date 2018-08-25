@@ -24,25 +24,43 @@ class Weeet < ApplicationRecord
   end
 
   def self.fetch limit:, from:
-    ap from
-    w = Weeet.joins(:user)
-             .limit(limit)
-             .order('weeets.created_at DESC')
-             .select('weeets.id AS id',
-                     'weeets.content AS weet_content',
-                     'weeets.created_at AS weet_created_at',
-                     'users.id AS weeter_id',
-                     'users.name AS weeter_name',
-                     'users.email AS weeter_email',
-                     'weeets.evaluate_at AS weet_evaluate_at',
-                     'weeets.is_evaluated AS weet_is_evaluated',
-                     'weeets.is_published AS weet_is_published')
+    # w = Weeet.joins(:user)
+    #          .limit(limit)
+    #          .order('weeets.created_at DESC')
+    #          .select('weeets.id AS id',
+    #                  'weeets.content AS weet_content',
+    #                  'weeets.created_at AS weet_created_at',
+    #                  'users.id AS weeter_id',
+    #                  'users.name AS weeter_name',
+    #                  'users.email AS weeter_email',
+    #                  'weeets.evaluate_at AS weet_evaluate_at',
+    #                  'weeets.is_evaluated AS weet_is_evaluated',
+    #                  'weeets.is_published AS weet_is_published')
 
+    w = query.limit(limit)
     if from > 0
       w = w.where('weeets.id < :t', t: from)
     end
 
     return w
+  end
+
+  def self.fetch_with id:
+    return query.where('weeets.id': id).first
+  end
+
+  def self.query 
+    return Weeet.joins(:user)
+                .order('weeets.created_at DESC')
+                .select('weeets.id AS id',
+                        'weeets.content AS weet_content',
+                        'weeets.created_at AS weet_created_at',
+                        'users.id AS weeter_id',
+                        'users.name AS weeter_name',
+                        'users.email AS weeter_email',
+                        'weeets.evaluate_at AS weet_evaluate_at',
+                        'weeets.is_evaluated AS weet_is_evaluated',
+                        'weeets.is_published AS weet_is_published')
   end
 
   def self.get_votes id:, user_id:

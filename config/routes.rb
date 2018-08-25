@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root to: 'weeet#index'
   get      '/weets',                           to: 'weeet#fetch'
+  get      '/weet',                            to: 'weeet#fetch_with'
   get      '/votes',                           to: 'weeet#get_votes'
   post     '/vote',                            to: 'weeet#send_vote'
   post     '/weet',                            to: 'weeet#post_weet'

@@ -39,7 +39,8 @@ class User < ApplicationRecord
   end
 
   def weet! content:
-    Weeet.create content: content, user_id: self.id
+    w = Weeet.create content: content, user_id: self.id
+    ActionCable.server.broadcast 'weeet_channel', { action: :new_weet, id: w.id }
   end
 
   def upvote weet_id:

@@ -11,6 +11,10 @@ class WeeetController < ApplicationController
                               from: (params[:from] || -1).to_i)
   end
 
+  def fetch_with
+    render json: (Weeet.fetch_with id: params[:id].to_i)
+  end
+
   def get_votes
     render json: (Weeet.get_votes id: params[:id].to_i, user_id: current_user.id)
   end

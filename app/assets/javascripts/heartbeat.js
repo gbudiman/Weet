@@ -14,6 +14,14 @@ var heartbeat = function() {
 
   var cable_message = function(data) {
     console.log(data)
+    switch(data.action) {
+      case 'new_weet': new_weet(data.id); break
+    }
+    
+  }
+
+  var new_weet = function(id) {
+    weet_cloner.notify_new(id)
   }
 
   return {

@@ -58,12 +58,33 @@ var weet_cloner = function() {
     })
   }
 
-  var clone = function(weet) {
-    if (oldest_content == undefined || weet.id < oldest_content) {
+  var notify_new = function(id) {
+    $.ajax({
+      method: 'GET',
+      url: '/weet',
+      data: {
+        id: id
+      }
+    }).done(res => {
+      console.log(res)
+      clone(res, 'prepend')
+    })
+  }
+
+  var clone = function(weet, _mode) {
+    let mode = _mode == undefined ? 'append' : _mode
+
+    if (mode == 'prepend' || (oldest_content == undefined || weet.id < oldest_content)) {
       let cloned = template.clone()
       cloned.attr('data-id', weet.id)
-      feed.append(cloned)
-      cloned.show()
+      if (mode == 'append') {
+        feed.append(cloned)
+        cloned.show()
+      } else {
+        feed.prepend(cloned)
+        cloned.show(400)
+      }
+      
 
       layout.set_content(weet.id, weet.weeter_id, weet.weeter_name, weet.weet_created_at, weet.weet_content)
       if (weet.weet_is_evaluated) {
@@ -77,6 +98,7 @@ var weet_cloner = function() {
     }
   }
   return {
-    init: init
+    init: init,
+    notify_new: notify_new
   }
 }()
