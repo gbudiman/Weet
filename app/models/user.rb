@@ -38,6 +38,36 @@ class User < ApplicationRecord
     end
   end
 
+  def self.get_activity id:
+    user = User.find(id)
+    weets = Weeet.where(user_id: id)
+                 .select('weeets.content AS weet_content')
+                 .select('weeets.created_at AS weet_date')
+                 .select('weeets.is_evaluated AS weet_is_evaluated')
+                 .select('weeets.is_published AS weet_is_published')
+                 .order('weeets.created_at DESC')
+                 .limit(25)
+
+    votes = Vote.joins(:weeet)
+                .joins(:user)
+                .where(user_id: id)
+                .select('weeets.content AS weet_content')
+                .select('users.name AS weeter_name')
+                .select('votes.voteup AS vote_up')
+                .select('votes.created_at AS vote_date')
+                .order('votes.created_at DESC')
+                .limit(100)
+
+    return {
+      weets: weets,
+      votes: votes,
+      karma: user.karma,
+      winning_streak: user.winning_streak,
+      name: user.name,
+      email: user.email
+    }
+  end
+
   def weet! content:
     w = Weeet.create content: content, user_id: self.id
     ActionCable.server.broadcast 'weeet_channel', { action: :new_weet, id: w.id }

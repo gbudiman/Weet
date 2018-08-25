@@ -1,0 +1,15 @@
+$vote-up: #5CB85C;
+$vote-down: #BE4343;
+
+.table {
+  .voteup {
+    background-color: $vote-up;
+    color: white;
+    text-align: center;
+  }
+  .votedown {
+    background-color: $vote-down;
+    color: white;
+    text-align: center;
+  }
+}

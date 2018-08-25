@@ -8,4 +8,12 @@ class UserController < ApplicationController
     end
     
   end
+
+  def activity
+    @id = params[:id].to_i
+  end
+
+  def fetch_activity
+    render json: User.get_activity(id: params[:id].to_i)
+  end
 end

@@ -1,0 +1,40 @@
+%div{class: 'pushdown'}
+%h2{id: 'user-name'} Fetching...
+%div
+  %div{class: 'col-xs-12 col-sm-4', id: 'user-email'}
+  %div{class: 'col-xs-12 col-sm-4'}
+    %span{class: 'glyphicon glyphicon-heart'}
+    %span{id: 'karma-point'}
+  %div{class: 'col-xs-12 col-sm-4'}
+    Streak: 
+    %span{id: 'user-streak'}
+  
+%h3{class: 'divs'} Weets
+%table{class: 'table'}
+  %thead
+    %tr
+      %th Date
+      %th Weet
+      %th State
+  %tbody{id: 'user-weets'}
+%h3{class: 'divs'} Activities
+%table{class: 'table'}
+  %thead
+    %tr
+      %th Date
+      %th Weeter
+      %th Weet
+      %th{style: 'width: 36px'} State
+  %tbody{id: 'user-votes'}
+
+= stylesheet_link_tag 'weeet'
+= stylesheet_link_tag 'activity'
+
+:javascript
+  let user_scripts_loaded = false
+  let user_id = "#{@id}"
+  $(document).on('turbolinks:load', function() {
+    if (!user_scripts_loaded) {
+      activity.init()
+    }
+  })

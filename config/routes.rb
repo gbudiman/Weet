@@ -13,4 +13,6 @@ Rails.application.routes.draw do
   post     '/weet',                            to: 'weeet#post_weet'
   get      '/heartbeat',                       to: 'weeet#heartbeat'
   post     '/edit_name',                       to: 'user#edit_name'
+  get      '/user/activity',                   to: 'user#activity'
+  get      '/user/fetch_activity',             to: 'user#fetch_activity'
 end
