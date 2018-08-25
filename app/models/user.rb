@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :rememberable
+  devise :database_authenticatable, :rememberable, :registerable
   enum role: [ :regular, :admin ]
   has_many :votes
 
