@@ -91,7 +91,7 @@ var weet_cloner = function() {
         layout.publish_weet(weet.id, weet.weet_is_published)
       } else {
         layout.set_vote_timer(weet.id, moment(weet.weet_evaluate_at))
-        layout.enable_vote(weet.id)
+        layout.enable_vote(weet.id, weet.weeter_id != current_user_id, 'Self-voting is not permitted')
       }
       
       oldest_content = weet.id

@@ -16,12 +16,18 @@ var heartbeat = function() {
     console.log(data)
     switch(data.action) {
       case 'new_weet': new_weet(data.id); break
+      case 'upvote_changed': vote_changed(data.id, data.val, 'down'); break
+      case 'downvote_changed': vote_changed(data.id, data.val, 'up'); break
     }
     
   }
 
   var new_weet = function(id) {
     weet_cloner.notify_new(id)
+  }
+
+  var vote_changed = function(id, val, mode) {
+    layout.update_vote(id, val, mode)
   }
 
   return {

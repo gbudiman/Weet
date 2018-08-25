@@ -92,7 +92,17 @@ var layout = function() {
     return $('[data-id=' + id + ']')
   }
 
-  var enable_vote = function(id, _val) {
+  var update_vote = function(id, val, mode) {
+    let obj = get(id)
+
+    if (mode == 'up') {
+      obj.find('.voteup-count').text(val)
+    } else {
+      obj.find('.votedown-count').text(val)
+    }
+  }
+
+  var enable_vote = function(id, _val, _reason) {
     let obj = get(id)
     let slider = obj.find('.slider')
     let val = (_val == undefined) ? true : _val
@@ -150,7 +160,7 @@ var layout = function() {
       obj.find('[data-vote-toggle="tooltip"]').attr('data-original-title', '')
     } else {
       buttons.addClass('disabled').removeClass('enabled')
-      obj.find('[data-vote-toggle="tooltip"]').attr('data-original-title', 'Voting period has ended')
+      obj.find('[data-vote-toggle="tooltip"]').attr('data-original-title', _reason == undefined ? 'Voting period has ended' : _reason)
     }
 
     if ($('#slider-' + id).length == 0) {
@@ -272,6 +282,7 @@ var layout = function() {
     publish_weet: publish_weet,
     set_vote_timer: set_vote_timer,
     set_content: set_content,
-    set_blockchain_persisted: set_blockchain_persisted
+    set_blockchain_persisted: set_blockchain_persisted,
+    update_vote: update_vote
   }
 }()

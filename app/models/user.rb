@@ -45,10 +45,20 @@ class User < ApplicationRecord
 
   def upvote weet_id:
     Weeet.find(weet_id).vote up: true, by: self.id
+    ActionCable.server.broadcast 'weeet_channel', { action: :upvote_changed, 
+                                                    id: weet_id, 
+                                                    val: Weeet.joins(:votes)
+                                                              .where('votes.weeet_id' => weet_id)
+                                                              .where('votes.voteup' => true).count}
   end
 
   def downvote weet_id:
     Weeet.find(weet_id).vote up: false, by: self.id
+    ActionCable.server.broadcast 'weeet_channel', { action: :downvote_changed, 
+                                                    id: weet_id, 
+                                                    val: Weeet.joins(:votes)
+                                                              .where('votes.weeet_id' => weet_id)
+                                                              .where('votes.voteup' => false).count}
   end
 
   def win!
