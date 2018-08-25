@@ -11,4 +11,5 @@ Rails.application.routes.draw do
   post     '/vote',                            to: 'weeet#send_vote'
   post     '/weet',                            to: 'weeet#post_weet'
   get      '/heartbeat',                       to: 'weeet#heartbeat'
+  post     '/edit_name',                       to: 'user#edit_name'
 end

@@ -11,7 +11,9 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in the app/assets
 # folder are already added.
-Rails.application.config.assets.precompile += %w( heartbeat.js
+Rails.application.config.assets.precompile += %w( bootstrap-editable.min.js
+                                                  heartbeat.js
                                                   layout.js
                                                   weet_cloner.js
+                                                  bootstrap-editable.css
                                                   weeet.scss )

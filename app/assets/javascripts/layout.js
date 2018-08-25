@@ -2,39 +2,22 @@ var layout = function() {
   var init = function() {
     initialize_non_clickable_links()
     initialize_tooltips()
-    initialize_modals()
+    initialize_editable()
   }
 
-  var initialize_modals = function() {
-    // $(window).bind('ajaxSend', function(element, xhr, s) {
-    //   if (s.type == 'POST') {
-    //     xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
-    //   }
-    // })
-
-    // $('#sign-in').modal({
-    //   show: true
-    // }).on('shown.bs.modal', e => {
-    //   $('#sign-in-email').focus()
-    // })
-
-    // $('#sign-in-password').on('keyup', e => {
-    //   if (e.keyCode == 13) {
-    //     $('#sign-in-button').trigger('click')
-    //   }
-    // })
-
-    // $('#sign-in-button').on('click', function() {
-    //   $.ajax({
-    //     method: 'POST',
-    //     url: '/users/sign_in',
-    //     data: {
-    //       email: $('#sign-in-email').val().trim(),
-    //       password: $('#sign-in-password').val().trim(),
-    //       remember_me: 1
-    //     }
-    //   })
-    // })
+  var initialize_editable = function() {
+    $('#navbar-user-name').editable({
+      type: 'text',
+      url: '/edit_name',
+      placement: 'bottom',
+      success: function(response, new_value) {
+        if (response.success == false) {
+          if (response.error == 'not_unique') {
+            return 'Username has been taken'
+          }
+        }
+      }
+    })
   }
 
   var initialize_non_clickable_links = function() {

@@ -30,6 +30,14 @@ class User < ApplicationRecord
     return users
   end
 
+  def self.edit_name id:, value:
+    user = User.find(id)
+    if user
+      user.name = value
+      user.save!
+    end
+  end
+
   def weet! content:
     Weeet.create content: content, user_id: self.id
   end
