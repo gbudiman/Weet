@@ -13,6 +13,9 @@ $post-bg-clicked: #369836;
 $vote-underlay: rgba(68, 143, 48, 0.1);
 $vote-remainder: rgba(68, 143, 48, 0.25);
 
+$vote-up: #5CB85C;
+$vote-down: #BE4343;
+
 body {
   font-family: 'Exo'
 }
@@ -69,9 +72,30 @@ body {
     height: 36px;
 
     .vote {
+      height: 35px;
       padding: 8px;
       text-align: center;
       border-right: 1px solid $gray-light;
+      border-left: 1px solid $gray-light;
+      margin-left: -1px;
+    }
+
+    .voteup.persisted {
+      background-color: $vote-up;
+      color: white;
+    }
+
+    .votedown.persisted {
+      background-color: $vote-down;
+      color: white;
+    }
+
+    .vote:first-child {
+      border-bottom-left-radius: 4px;
+    }
+
+    .vote.faded {
+      opacity: 0.1;
     }
 
     .vote.enabled {
@@ -80,6 +104,7 @@ body {
         background-color: white;
       }
     }
+
 
     .vote.disabled {
       color: $gray-light;
@@ -110,6 +135,10 @@ body {
         z-index: 11;
         color: $black;
       }
+    }
+
+    .slider {
+      padding: 0;
     }
 
     .post-weet {

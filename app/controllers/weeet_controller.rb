@@ -12,7 +12,7 @@ class WeeetController < ApplicationController
   end
 
   def get_votes
-    render json: (Weeet.get_votes id: params[:id].to_i)
+    render json: (Weeet.get_votes id: params[:id].to_i, user_id: current_user.id)
   end
 
   def send_vote

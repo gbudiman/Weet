@@ -29,6 +29,8 @@ var layout = function() {
 
   var initialize_weet_field = function() {
     post_button = $('#post-weet')
+
+    if (post_button.length == 0) return
     post_content = $('#weet-content')
     char_remaining = $('#char-remaining')
 
@@ -92,16 +94,98 @@ var layout = function() {
 
   var enable_vote = function(id, _val) {
     let obj = get(id)
+    let slider = obj.find('.slider')
     let val = (_val == undefined) ? true : _val
     let buttons = obj.find('.vote')
 
+    if (current_user_id == -1) return
+
+
     buttons.attr('data-id=' + id)
+    buttons.show()
+
+    let voteup = obj.find('.voteup')
+    let votedown = obj.find('.votedown')
+
+    $.ajax({
+      method: 'GET',
+      url: '/votes',
+      data: {
+        id: id
+      }
+    }).done(res => {
+      voteup.find('.voteup-count').text(res.upvote_count)
+      votedown.find('.votedown-count').text(res.downvote_count)
+
+      if (res.has_voted) {
+        votedown.off('click').removeClass('enabled')
+        voteup.off('click').removeClass('enabled')
+        //vote.off('click')
+        //vote.removeClass('enabled')
+        if (res.voteup) {
+          voteup.addClass('persisted')
+          votedown.addClass('disabled')
+        } else {
+          voteup.addClass('disabled')
+          votedown.addClass('persisted')
+        }
+      }
+    })
+
+    voteup.on('click', function() {
+      obj.find('.slide-text').text('Slide to Upvote')
+      $('#slider-' + id).show()
+      voteup.removeClass('faded')
+      votedown.addClass('faded')
+    })
+
+    votedown.on('click', function() {
+      obj.find('.slide-text').text('Slide to Downvote')
+      $('#slider-' + id).show()
+      votedown.removeClass('faded')
+      voteup.addClass('faded')
+    })
     if (val) {
       buttons.removeClass('disabled').addClass('enabled')
       obj.find('[data-vote-toggle="tooltip"]').attr('data-original-title', '')
     } else {
       buttons.addClass('disabled').removeClass('enabled')
       obj.find('[data-vote-toggle="tooltip"]').attr('data-original-title', 'Voting period has ended')
+    }
+
+    if ($('#slider-' + id).length == 0) {
+      slider.attr('id', 'slider-' + id)
+      slider.attr('data-id', id)
+      SlideToUnlock.init('#slider-' + id, {
+        height: 35,
+        margin_top: -27,
+        font_size: 14,
+        text_slid: 'Sending Vote...',
+        text_done: 'Vote Recorded!',
+        func_slid: function() {
+          return new Promise((resolve, reject) => {
+            $.ajax({
+              method: 'POST',
+              url: '/vote',
+              data: {
+                id: slider.attr('data-id'),
+                voteup: slider.attr('data-vote-up'),
+              }
+            }).done(res => {
+              resolve(res.success)
+            })
+          })
+        },
+        func_done: function() {
+          return new Promise((resolve, reject) => {
+            setTimeout(function() {
+              $('#slider-' + id).hide(500)
+            }, 2500)
+            resolve(true)
+          })
+          
+        }
+      })
     }
   }
 

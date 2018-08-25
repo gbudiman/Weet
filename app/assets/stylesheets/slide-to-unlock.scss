@@ -1,0 +1,29 @@
+.slide-to-unlock-parent {
+  border: 1px solid #eee;
+  //border-radius: 8px;
+  background-color: #eee;
+  //margin-right: -1px;
+
+  .slideable {
+    width: 10%;
+    min-width: 128px;
+    border-radius: 8px;
+    border: 1px solid #aaa;
+    margin: -1px;
+    background-color: #fff;
+    position: relative;
+    z-index: 999;
+    opacity: 0.9;
+  }
+
+  .slideable.disabled {
+    background-color: #eee;
+  }
+
+  .slide-text {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    user-select: none;
+  }
+}

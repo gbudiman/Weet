@@ -14,6 +14,8 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 Rails.application.config.assets.precompile += %w( bootstrap-editable.min.js
                                                   heartbeat.js
                                                   layout.js
+                                                  slide-to-unlock.js
                                                   weet_cloner.js
                                                   bootstrap-editable.css
+                                                  slide-to-unlock.scss
                                                   weeet.scss )

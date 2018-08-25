@@ -1,24 +1,27 @@
 = render partial: 'weet_template'
 = render partial: 'sign_in'
 
-%div{class: 'new-weet', id: 'new-weet'}
-  %div{class: 'weet-container'}
-    %div{class: 'weet-header'}
-      %div{class: 'weet-author'} Post New Weet
-    %div{class: 'weet-body'}
-      %textarea{class: 'weet-field form-control', rows: 5, placeholder: 'Type something juicy...', id: 'weet-content'}
-    %div{class: 'weet-footer'}
-      %div{class: 'col-xs-10 char-remaining', id: 'char-remaining'}
-      %div{class: 'col-xs-2 post-weet', id: 'post-weet'} Post
+- if @current_user
+  %div{class: 'new-weet', id: 'new-weet'}
+    %div{class: 'weet-container'}
+      %div{class: 'weet-header'}
+        %div{class: 'weet-author'} Post New Weet
+      %div{class: 'weet-body'}
+        %textarea{class: 'weet-field form-control', rows: 5, placeholder: 'Type something juicy...', id: 'weet-content'}
+      %div{class: 'weet-footer'}
+        %div{class: 'col-xs-10 char-remaining', id: 'char-remaining'}
+        %div{class: 'col-xs-2 post-weet', id: 'post-weet'} Post
 %div{class: 'feed', id: 'feed'}
 %div{class: 'border', id: 'border'} Fetching more content...
 
 
 = stylesheet_link_tag 'weeet'
 = stylesheet_link_tag 'bootstrap-editable'
+= stylesheet_link_tag 'slide-to-unlock'
 
 :javascript
   let scripts_loaded = false
+  let current_user_id = "#{current_user ? current_user.id : -1}"
   $(document).on('turbolinks:load', function() {
     if (!scripts_loaded) {
       layout.init()

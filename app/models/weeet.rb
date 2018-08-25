@@ -45,13 +45,16 @@ class Weeet < ApplicationRecord
     return w
   end
 
-  def self.get_votes id:
+  def self.get_votes id:, user_id:
     votes = Vote.where(weeet_id: id)
+    has_voted = (votes.where(user_id: user_id).count == 1)
 
     return {
       id: id,
       upvote_count: votes.where(voteup: true).count,
-      downvote_count: votes.where(voteup: false).count
+      downvote_count: votes.where(voteup: false).count,
+      has_voted: votes.where(user_id: user_id).count == 1,
+      voteup: has_voted ? votes.where(user_id: user_id).first.voteup : nil
     }
   end
 
