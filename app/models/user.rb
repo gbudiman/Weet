@@ -3,7 +3,8 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :rememberable, :registerable
   enum role: [ :regular, :admin ]
-  has_many :votes
+  has_many :votes, dependent: :destroy
+  has_many :weeets, dependent: :destroy
 
   def self.seed
     users = Array.new
@@ -39,33 +40,39 @@ class User < ApplicationRecord
   end
 
   def self.get_activity id:
-    user = User.find(id)
-    weets = Weeet.where(user_id: id)
-                 .select('weeets.content AS weet_content')
-                 .select('weeets.created_at AS weet_date')
-                 .select('weeets.is_evaluated AS weet_is_evaluated')
-                 .select('weeets.is_published AS weet_is_published')
-                 .order('weeets.created_at DESC')
-                 .limit(25)
+    begin
+      user = User.find(id)
+      weets = Weeet.where(user_id: id)
+                   .select('weeets.content AS weet_content')
+                   .select('weeets.created_at AS weet_date')
+                   .select('weeets.is_evaluated AS weet_is_evaluated')
+                   .select('weeets.is_published AS weet_is_published')
+                   .order('weeets.created_at DESC')
+                   .limit(25)
 
-    votes = Vote.joins(:weeet)
-                .joins(:user)
-                .where(user_id: id)
-                .select('weeets.content AS weet_content')
-                .select('users.name AS weeter_name')
-                .select('votes.voteup AS vote_up')
-                .select('votes.created_at AS vote_date')
-                .order('votes.created_at DESC')
-                .limit(100)
+      votes = Vote.joins(:weeet)
+                  .joins(:user)
+                  .where(user_id: id)
+                  .select('weeets.content AS weet_content')
+                  .select('users.name AS weeter_name')
+                  .select('votes.voteup AS vote_up')
+                  .select('votes.created_at AS vote_date')
+                  .order('votes.created_at DESC')
+                  .limit(100)
 
-    return {
-      weets: weets,
-      votes: votes,
-      karma: user.karma,
-      winning_streak: user.winning_streak,
-      name: user.name,
-      email: user.email
-    }
+      return {
+        weets: weets,
+        votes: votes,
+        karma: user.karma,
+        winning_streak: user.winning_streak,
+        name: user.name,
+        email: user.email
+      }
+    rescue ActiveRecord::RecordNotFound
+      return {
+        error: :no_such_user_id
+      }
+    end
   end
 
   def weet! content:
@@ -89,6 +96,12 @@ class User < ApplicationRecord
                                                     val: Weeet.joins(:votes)
                                                               .where('votes.weeet_id' => weet_id)
                                                               .where('votes.voteup' => false).count}
+  end
+
+  def reset!
+    self.winning_streak = 0
+    self.karma = 100
+    self.save!
   end
 
   def win!

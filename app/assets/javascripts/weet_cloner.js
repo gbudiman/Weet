@@ -67,7 +67,6 @@ var weet_cloner = function() {
         id: id
       }
     }).done(res => {
-      console.log(res)
       clone(res, 'prepend')
     })
   }
@@ -90,12 +89,15 @@ var weet_cloner = function() {
       layout.set_content(weet.id, weet.weeter_id, weet.weeter_name, weet.weet_created_at, weet.weet_content)
       if (weet.weet_is_evaluated) {
         layout.publish_weet(weet.id, weet.weet_is_published)
+        layout.enable_vote(weet.id, false)
       } else {
         layout.set_vote_timer(weet.id, moment(weet.weet_evaluate_at))
         layout.enable_vote(weet.id, weet.weeter_id != current_user_id, 'Self-voting is not permitted')
       }
       
-      oldest_content = weet.id
+      if (mode == 'append') {
+        oldest_content = weet.id
+      }
     }
   }
   return {

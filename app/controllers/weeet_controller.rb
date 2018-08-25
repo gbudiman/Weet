@@ -20,7 +20,7 @@ class WeeetController < ApplicationController
   end
 
   def send_vote
-    up = params[:up] == 'up'
+    up = params[:voteup] == 'true'
     weet_id = params[:id].to_i
 
     if up

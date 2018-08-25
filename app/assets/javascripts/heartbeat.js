@@ -16,8 +16,9 @@ var heartbeat = function() {
     console.log(data)
     switch(data.action) {
       case 'new_weet': new_weet(data.id); break
-      case 'upvote_changed': vote_changed(data.id, data.val, 'down'); break
-      case 'downvote_changed': vote_changed(data.id, data.val, 'up'); break
+      case 'upvote_changed': vote_changed(data.id, data.val, 'up'); break
+      case 'downvote_changed': vote_changed(data.id, data.val, 'down'); break
+      case 'weet_evaluated': weet_evaluated(data.id, data.val); break
     }
     
   }
@@ -28,6 +29,10 @@ var heartbeat = function() {
 
   var vote_changed = function(id, val, mode) {
     layout.update_vote(id, val, mode)
+  }
+
+  var weet_evaluated = function(id, val) {
+    layout.publish_weet(id, val)
   }
 
   return {

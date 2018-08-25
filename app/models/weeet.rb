@@ -2,7 +2,7 @@ class Weeet < ApplicationRecord
   belongs_to :user
   validates :user, presence: true
   validates :content, length: { maximum: 280 }, strict: true
-  has_many :votes
+  has_many :votes, dependent: :destroy
 
   before_create :add_evaluate_at
 
@@ -24,19 +24,6 @@ class Weeet < ApplicationRecord
   end
 
   def self.fetch limit:, from:
-    # w = Weeet.joins(:user)
-    #          .limit(limit)
-    #          .order('weeets.created_at DESC')
-    #          .select('weeets.id AS id',
-    #                  'weeets.content AS weet_content',
-    #                  'weeets.created_at AS weet_created_at',
-    #                  'users.id AS weeter_id',
-    #                  'users.name AS weeter_name',
-    #                  'users.email AS weeter_email',
-    #                  'weeets.evaluate_at AS weet_evaluate_at',
-    #                  'weeets.is_evaluated AS weet_is_evaluated',
-    #                  'weeets.is_published AS weet_is_published')
-
     w = query.limit(limit)
     if from > 0
       w = w.where('weeets.id < :t', t: from)
@@ -86,6 +73,17 @@ class Weeet < ApplicationRecord
                 voteup: up
   end
 
+  def self.mass_evaluate
+    count = 0
+    Weeet.where(is_evaluated: false)
+         .where('evaluate_at <= :t', t: Time.now).each do |weet|
+      weet.evaluate!
+      count = count + 1
+    end
+
+    ap "#{count} Weets evaluated"
+  end
+
   def evaluate!
     return if self.is_evaluated 
     return if Time.now < self.evaluate_at
@@ -119,11 +117,17 @@ class Weeet < ApplicationRecord
       end
 
       self.save!
+      ActionCable.server.broadcast 'weeet_channel', { action: :weet_evaluated, 
+                                                      id: self.id,
+                                                      val: self.is_published }
     end
   end
 
 private
   def add_evaluate_at
-    self.evaluate_at = Time.now + 1.hour
+    evaluate_time = Time.now + 10.seconds
+    self.evaluate_at = evaluate_time
+    EvaluatorWorker.perform_in(evaluate_time, 'evaluate')
+    EvaluatorWorker.perform_in(evaluate_time + 10.seconds, 'evaluate')
   end
 end

@@ -1,8 +1,13 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   devise_for :users, controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations'
   }
+  authenticate :user do
+    mount Sidekiq::Web => '/sidekiq'
+  end
   mount ActionCable.server, at: '/cable'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root to: 'weeet#index'

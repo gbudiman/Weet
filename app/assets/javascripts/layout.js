@@ -147,6 +147,7 @@ var layout = function() {
       $('#slider-' + id).show()
       voteup.removeClass('faded')
       votedown.addClass('faded')
+      slider.attr('data-vote-up', 'true')
     })
 
     votedown.on('click', function() {
@@ -154,6 +155,7 @@ var layout = function() {
       $('#slider-' + id).show()
       votedown.removeClass('faded')
       voteup.addClass('faded')
+      slider.attr('data-vote-up', 'false')
     })
     if (val) {
       buttons.removeClass('disabled').addClass('enabled')
@@ -174,6 +176,8 @@ var layout = function() {
         text_slid: 'Sending Vote...',
         text_done: 'Vote Recorded!',
         func_slid: function() {
+          votedown.off('click').removeClass('enabled')
+          voteup.off('click').removeClass('enabled')
           return new Promise((resolve, reject) => {
             $.ajax({
               method: 'POST',
