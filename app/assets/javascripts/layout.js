@@ -164,6 +164,7 @@ var layout = function() {
     }
 
     if ($('#slider-' + id).length == 0) {
+      if (slider.length == 0) return
       slider.attr('id', 'slider-' + id)
       slider.attr('data-id', id)
       SlideToUnlock.init('#slider-' + id, {
@@ -215,7 +216,7 @@ var layout = function() {
     let obj = get(id)
     let author_obj = obj.find('.weet-author').find('a')
 
-    author_obj.text(author).attr('href', '/weeter/' + author_id).attr('data-author-id', author_id)
+    author_obj.text(author).attr('href', '/user/activity?id=' + author_id).attr('data-author-id', author_id)
     obj.find('.weet-date').text(date)
     obj.find('.weet-body').text(content)
     enable_tooltips(id)

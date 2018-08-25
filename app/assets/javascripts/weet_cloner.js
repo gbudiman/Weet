@@ -13,6 +13,7 @@ var weet_cloner = function() {
     border = $('#border')
     is_fetching = false
     oldest_reached = false
+    oldest_content = undefined
     attach_window_events()
   }
 

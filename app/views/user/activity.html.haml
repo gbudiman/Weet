@@ -31,10 +31,11 @@
 = stylesheet_link_tag 'activity'
 
 :javascript
-  let user_scripts_loaded = false
-  let user_id = "#{@id}"
+  var user_scripts_loaded = false
+  var user_id = "#{@id}"
   $(document).on('turbolinks:load', function() {
     if (!user_scripts_loaded) {
       activity.init()
+      user_scripts_loaded = true
     }
   })
