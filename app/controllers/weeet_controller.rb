@@ -29,7 +29,7 @@ class WeeetController < ApplicationController
   end
 
   def post_weet
-    current_user.weet! content: params[:weet]
+    current_user.weet! content: params[:content]
     render json: { success: true }
   end
 end

@@ -1,8 +1,13 @@
 var layout = function() {
+  let post_button
+  let post_content
+  let char_remaining
+
   var init = function() {
     initialize_non_clickable_links()
     initialize_tooltips()
     initialize_editable()
+    initialize_weet_field()
   }
 
   var initialize_editable = function() {
@@ -20,6 +25,54 @@ var layout = function() {
         }
       }
     })
+  }
+
+  var initialize_weet_field = function() {
+    post_button = $('#post-weet')
+    post_content = $('#weet-content')
+    char_remaining = $('#char-remaining')
+
+    var set_post_button_state = function(state) {
+      switch(state) {
+        case 'busy':
+          post_button.addClass('disabled')
+          break
+        case 'available':
+          post_button.removeClass('disabled')
+          break
+      }
+    }
+
+    var evaluate_length = function() {
+      let length = post_content.val().trim().length
+      if (length == 0) {
+        set_post_button_state('busy')
+      } else {
+        set_post_button_state('available')
+      }
+      char_remaining.text((280 - length) + ' characters left')
+    }
+
+    post_content.on('keyup', function() {
+      evaluate_length()
+    })
+
+    post_button.off('click').on('click', function() {
+      $.ajax({
+        method: 'POST',
+        url: '/weet',
+        data: {
+          content: post_content.val().trim()
+        }
+      }).done(res => {
+        if (res.success) {
+          post_content.val('')
+          evaluate_length()
+        }
+      })
+    })
+
+    evaluate_length()
   }
 
   var initialize_non_clickable_links = function() {

@@ -7,6 +7,9 @@ $gray-light: #ccc;
 $off-white: #eee;
 $black: #333;
 
+$post-bg: #5cb85c;
+$post-bg-hover: #8AD38A;
+$post-bg-clicked: #369836;
 $vote-underlay: rgba(68, 143, 48, 0.1);
 $vote-remainder: rgba(68, 143, 48, 0.25);
 
@@ -54,11 +57,16 @@ body {
 
   .weet-body {
     padding: 8px;
+
+    .weet-field {
+      width: 100%;
+    }
   }
 
   .weet-footer {
     background-color: $off-white;
     border-top: 1px solid $gray-light;
+    height: 36px;
 
     .vote {
       padding: 8px;
@@ -84,6 +92,8 @@ body {
       padding-left: 0px;
       padding-right: 0px;
       background-color: $vote-underlay;
+      right: -2px;
+      border-bottom-right-radius: 4px;
 
       .timer-bar {
         background-color: $vote-remainder;
@@ -100,6 +110,35 @@ body {
         z-index: 11;
         color: $black;
       }
+    }
+
+    .post-weet {
+      height: 36px;
+      line-height: 36px;
+      cursor: pointer;
+      background-color: $post-bg;
+      text-align: center;
+      color: white;
+      right: -2px;
+      border-bottom-right-radius: 4px;
+
+      &:hover {
+        background-color: $post-bg-hover;
+      }
+
+      &:active {
+        background-color: $post-bg-clicked;
+      }
+    }
+
+    .post-weet.disabled {
+      background-color: $gray-light;
+    }
+
+    .char-remaining {
+      color: $gray-light;
+      padding-left: 8px;
+      padding-top: 8px;
     }
 
     .approve-status {
