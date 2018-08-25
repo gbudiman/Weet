@@ -15,6 +15,8 @@ var layout = function() {
           if (response.error == 'not_unique') {
             return 'Username has been taken'
           }
+        } else {
+          $('[data-author-id=' + response.pk + ']').text(new_value)
         }
       }
     })
@@ -66,7 +68,7 @@ var layout = function() {
     let obj = get(id)
     let author_obj = obj.find('.weet-author').find('a')
 
-    author_obj.text(author).attr('href', '/weeter/' + author_id)
+    author_obj.text(author).attr('href', '/weeter/' + author_id).attr('data-author-id', author_id)
     obj.find('.weet-date').text(date)
     obj.find('.weet-body').text(content)
     enable_tooltips(id)
