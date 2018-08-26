@@ -36,6 +36,10 @@ class User < ApplicationRecord
     if user
       user.name = value
       user.save!
+
+      ActionCable.server.broadcast 'weeet_channel', { action: :name_changed, 
+                                                      id: user.id,
+                                                      val: user.name }
     end
   end
 
@@ -144,6 +148,7 @@ class User < ApplicationRecord
 
   def lose!
     self.karma = self.karma - 10
+    self.winning_streak = 0
 
     if self.karma == 0
       fill_time = ENV['mode'] == 'fast' ? (Time.now + 1.minute) : (Time.now + 1.day)

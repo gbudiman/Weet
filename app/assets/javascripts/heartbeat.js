@@ -34,7 +34,7 @@ var heartbeat = function() {
       case 'weet_evaluated': weet_evaluated(data.id, data.val); break
       case 'karma_changed': activity_karma_changed(data.id, data.val); break
       case 'streak_changed': activity_streak_changed(data.id, data.val); break
-      case 'name_changed': activity_name_changed(data.id, data.val); break;
+      case 'name_changed': dual_name_changed(data.id, data.val); break;
     }
     
   }
@@ -69,8 +69,14 @@ var heartbeat = function() {
     activity.update_streak(id, val)
   }
 
-  var activity_name_changed = function(id, val) {
-    activity.update_name(id, val)
+  var dual_name_changed = function(id, val) {
+    try {
+      activity.update_name(id, val)
+    } catch(e) {}
+
+    try {
+      layout.update_author_name(id, val)
+    } catch(e) {}
   }
 
   return {

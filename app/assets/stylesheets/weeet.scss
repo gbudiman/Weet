@@ -131,7 +131,11 @@ body {
 
 
     .vote.disabled {
-      color: $gray-light;
+      color: $gray-dark;
+    }
+
+    .vote.persisted.disabled {
+      color: white;
     }
 
     .timer-container {

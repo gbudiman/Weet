@@ -55,13 +55,16 @@ RSpec.describe User, type: :model do
 
   context 'losing' do
     it 'should lose 10 karma points' do
+      User.find(@user.id).update(winning_streak: 2)
+      expect(User.find(@user.id).winning_streak).to eq 2
       3.times do
         user = User.find(@user.id)
         current_karma = user.karma
-        @user.lose!
+        user.lose!
 
         user = User.find(@user.id)
         expect(user.karma).to eq(current_karma - 10)
+        expect(user.winning_streak).to eq 0
       end
     end
 

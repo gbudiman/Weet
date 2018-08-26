@@ -92,6 +92,12 @@ var layout = function() {
     return $('[data-id=' + id + ']')
   }
 
+  var update_author_name = function(id, val) {
+    let x = $('[data-author-id=' + id + ']')
+    console.log(x)
+    x.text(val)
+  }
+
   var update_vote = function(id, val, mode) {
     let obj = get(id)
 
@@ -161,7 +167,7 @@ var layout = function() {
       buttons.removeClass('disabled').addClass('enabled').attr('data-mask', 'voteable')
       obj.find('[data-vote-toggle="tooltip"]').attr('data-original-title', '')
     } else {
-      buttons.addClass('disabled').removeClass('enabled')
+      buttons.addClass('disabled').removeClass('enabled').off('click')
       obj.find('[data-vote-toggle="tooltip"]').attr('data-original-title', _reason == undefined ? 'Voting period has ended' : _reason)
 
       if (_reason == undefined) {
@@ -209,8 +215,10 @@ var layout = function() {
 
             if (slider.attr('data-vote-up') == 'true') {
               voteup.attr('data-original-title', 'You upvoted').addClass('persisted')
+              votedown.attr('data-original-title', 'You upvoted')
             } else {
               votedown.attr('data-original-title', 'You downvoted').addClass('persisted')
+              voteup.attr('data-original-title', 'You downvoted')
             }
             resolve(true)
           })
@@ -300,10 +308,18 @@ var layout = function() {
 
   var update_vote_capability = function(has_enough) {
     if (has_enough === true) {
-      $('[data-mask="insufficient_karma"]')
-        .removeClass('disabled')
-        .addClass('enabled')
-        .attr('data-mask', 'voteable')
+      $('[data-mask="insufficient_karma"]').each(function() {
+        let $this = $(this)
+        let id = $this.parent().parent().attr('data-id')
+        console.log($this)
+        $this.removeClass('disabled')
+          .addClass('enabled')
+          .attr('data-mask', 'voteable')
+          .attr('data-original-title', '')
+
+        enable_vote(id, true)
+      })
+        
     } else {
       let message
 
@@ -311,11 +327,13 @@ var layout = function() {
         case 'insufficient_karma': message = 'Insufficient karma'; break
         case 'insufficient_pending_karma': message = 'Insufficient pending karma'; break
       }
+
       $('[data-mask="voteable"]')
         .removeClass('enabled')
         .addClass('disabled')
         .attr('data-mask', 'insufficient_karma')
         .attr('data-original-title', message)
+        .off('click')
     }
   }
 
@@ -334,6 +352,7 @@ var layout = function() {
     update_vote: update_vote,
     update_karma: update_karma,
     initialize_tooltips: initialize_tooltips,
-    initialize_editable: initialize_editable
+    initialize_editable: initialize_editable,
+    update_author_name: update_author_name
   }
 }()

@@ -10,11 +10,12 @@ class WeeetController < ApplicationController
   
   def fetch
     render json: (Weeet.fetch limit: (params[:limit] || 5).to_i,
-                              from: (params[:from] || -1).to_i)
+                              from: (params[:from] || -1).to_i,
+                              is_guest: current_user == nil)
   end
 
   def fetch_with
-    render json: (Weeet.fetch_with id: params[:id].to_i)
+    render json: (Weeet.fetch_with id: params[:id].to_i, is_guest: current_user == nil)
   end
 
   def get_votes
