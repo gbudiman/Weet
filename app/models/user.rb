@@ -95,6 +95,7 @@ class User < ApplicationRecord
   def weet! content:
     w = Weeet.create content: content, user_id: self.id
     ActionCable.server.broadcast 'weeet_channel', { action: :new_weet, id: w.id }
+    return w
   end
 
   def upvote weet_id:
@@ -143,7 +144,7 @@ class User < ApplicationRecord
     self.karma = self.karma - 10
 
     if self.karma == 0
-      fill_time = Time.now + 1.minute
+      fill_time = Time.now + 1.day
       self.karma_fill_time = fill_time
       EvaluatorWorker.perform_at(fill_time, 'evaluate')
       EvaluatorWorker.perform_at(fill_time + 5.seconds, 'evaluate')

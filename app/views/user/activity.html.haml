@@ -1,5 +1,13 @@
 %div{class: 'pushdown'}
-%h2{id: 'user-name'} Fetching...
+%div
+  %div{class: 'pull-left'}
+    %h2{id: 'user-name'} Fetching...
+  %div{class: 'pull-right button-refresh', id: 'refresh'}
+    %button{class: 'btn btn-success'}
+      %span{class: 'glyphicon glyphicon-refresh'}
+      %span{class: 'text'} Refresh
+%div{class: 'row'}
+
 %div
   %div{class: 'col-xs-12 col-sm-4', id: 'user-email'}
   %div{class: 'col-xs-12 col-sm-4'}
@@ -12,6 +20,7 @@
     Karma Refill:
     %span{id: 'karma-refill'}
   
+%div{class: 'row'}
 %h3{class: 'divs'} Weets
 %table{class: 'table'}
   %thead

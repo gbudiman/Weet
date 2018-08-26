@@ -1,5 +1,13 @@
 $vote-up: #5CB85C;
 $vote-down: #BE4343;
+$gray-dark: #888;
+$gray-light: #ccc;
+$off-white: #eee;
+
+
+.button-refresh {
+  margin-top: 16px;
+}
 
 .table {
   .voteup {
@@ -11,5 +19,9 @@ $vote-down: #BE4343;
     background-color: $vote-down;
     color: white;
     text-align: center;
+  }
+  .evalpending {
+    text-align: center;
+    background-color: $off-white;
   }
 }
