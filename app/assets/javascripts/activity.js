@@ -35,12 +35,16 @@ var activity = function() {
 
         let v = ''
         res.votes.forEach(vote => {
+          let eval = (vote.weet_is_evaluated ? (vote.weet_is_published ? '<td class="voteup"><span class="glyphicon glyphicon-ok" /></td>'
+                                                                       : '<td class="votedown"><span class="glyphicon glyphicon-remove" /></td>')
+                                             : '<td><span class="glyphicon glyphicon-time /></td>')
           let ud = (vote.vote_up ? '<td class="voteup"><span class="glyphicon glyphicon-arrow-up" /></td>'
                                  : '<td class="votedown"><span class="glyphicon glyphicon-arrow-down" /></td>')
           v += '<tr>'
             +    '<td>' + vote.vote_date + '</td>'
             +    '<td>' + vote.weeter_name + '</td>'
             +    '<td>' + snip(vote.weet_content) + '</td>'
+            +    eval
             +    ud
             +  '</tr>'
         })

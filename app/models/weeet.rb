@@ -127,7 +127,7 @@ private
   def add_evaluate_at
     evaluate_time = Time.now + 10.seconds
     self.evaluate_at = evaluate_time
-    EvaluatorWorker.perform_in(evaluate_time, 'evaluate')
-    EvaluatorWorker.perform_in(evaluate_time + 10.seconds, 'evaluate')
+    EvaluatorWorker.perform_at(evaluate_time, 'evaluate')
+    EvaluatorWorker.perform_at(evaluate_time + 5.seconds, 'evaluate')
   end
 end

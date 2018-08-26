@@ -54,6 +54,8 @@ class User < ApplicationRecord
                   .joins(:user)
                   .where(user_id: id)
                   .select('weeets.content AS weet_content')
+                  .select('weeets.is_evaluated AS weet_is_evaluated')
+                  .select('weeets.is_published AS weet_is_published')
                   .select('users.name AS weeter_name')
                   .select('votes.voteup AS vote_up')
                   .select('votes.created_at AS vote_date')

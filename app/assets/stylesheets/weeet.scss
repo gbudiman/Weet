@@ -27,6 +27,20 @@ body {
   display: none;
 }
 
+.navbar-header {
+  float: left !important;
+}
+
+.nav.navbar-nav {
+  float: right !important;
+  margin-top: 0px;
+  margin-bottom: 0px;
+
+  li {
+    float: left;
+  }
+}
+
 .pushdown {
   height: 52px;
   width: 100%;
@@ -213,6 +227,9 @@ body {
 }
 
 @media screen and (max-width: 767px) {
+  .nav.navbar-nav {
+    margin-top: 10px;
+  }
   .weet-container {
     .weet-header {
       .weet-date {
