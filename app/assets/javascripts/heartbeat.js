@@ -41,7 +41,7 @@ var heartbeat = function() {
 
   var user_message = function(data) {
     switch(data.action) {
-      case 'karma_changed': karma_changed(data.val); break
+      case 'karma_changed': karma_changed(data.val, data.has_enough); break
     }
   }
 
@@ -57,8 +57,8 @@ var heartbeat = function() {
     layout.publish_weet(id, val)
   }
 
-  var karma_changed = function(val) {
-    layout.update_karma(val)
+  var karma_changed = function(val, has_enough) {
+    layout.update_karma(val, has_enough)
   }
 
   var activity_karma_changed = function(id, val) {

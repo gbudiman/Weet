@@ -136,7 +136,7 @@ class User < ApplicationRecord
     # end
 
     self.save!
-    ActionCable.server.broadcast "weeet_channel_#{self.id}", { action: :karma_changed, val: self.karma }
+    ActionCable.server.broadcast "weeet_channel_#{self.id}", { action: :karma_changed, val: self.karma, has_enough: has_enough_karma }
   end
 
   def lose!
@@ -149,7 +149,7 @@ class User < ApplicationRecord
       EvaluatorWorker.perform_at(fill_time + 5.seconds, 'evaluate')
     end
     self.save!
-    ActionCable.server.broadcast "weeet_channel_#{self.id}", { action: :karma_changed, val: self.karma }
+    ActionCable.server.broadcast "weeet_channel_#{self.id}", { action: :karma_changed, val: self.karma, has_enough: has_enough_karma }
   end
 
   def self.mass_refill
@@ -167,6 +167,6 @@ class User < ApplicationRecord
     end
 
     self.save!
-    ActionCable.server.broadcast "weeet_channel_#{self.id}", { action: :karma_changed, val: self.karma } 
+    ActionCable.server.broadcast "weeet_channel_#{self.id}", { action: :karma_changed, val: self.karma, has_enough: has_enough_karma } 
   end
 end

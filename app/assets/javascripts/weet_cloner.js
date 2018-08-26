@@ -138,6 +138,7 @@ var weet_cloner = function() {
       }
     }
   }
+
   return {
     init: init,
     notify_new: notify_new

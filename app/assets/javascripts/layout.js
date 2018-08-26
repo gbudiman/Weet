@@ -124,20 +124,19 @@ var layout = function() {
         id: id
       }
     }).done(res => {
-      voteup.find('.voteup-count').text(res.upvote_count)
-      votedown.find('.votedown-count').text(res.downvote_count)
+      voteup.find('.voteup-count').text(res.upvote_count).attr('data-mask', 'voteable')
+      votedown.find('.votedown-count').text(res.downvote_count).attr('data-mask', 'voteable')
 
       if (res.has_voted) {
-        votedown.off('click').removeClass('enabled')
-        voteup.off('click').removeClass('enabled')
-        //vote.off('click')
-        //vote.removeClass('enabled')
+        votedown.off('click').removeClass('enabled').attr('data-mask', 'has_voted')
+        voteup.off('click').removeClass('enabled').attr('data-mask', 'has_voted')
+
         if (res.voteup) {
-          voteup.addClass('persisted')
+          voteup.addClass('persisted').attr('data-original-title', 'You upvoted')
           votedown.addClass('disabled')
         } else {
           voteup.addClass('disabled')
-          votedown.addClass('persisted')
+          votedown.addClass('persisted').attr('data-original-title', 'You downvoted')
         }
       }
     })
@@ -157,12 +156,21 @@ var layout = function() {
       voteup.addClass('faded')
       slider.attr('data-vote-up', 'false')
     })
+
     if (val) {
-      buttons.removeClass('disabled').addClass('enabled')
+      buttons.removeClass('disabled').addClass('enabled').attr('data-mask', 'voteable')
       obj.find('[data-vote-toggle="tooltip"]').attr('data-original-title', '')
     } else {
       buttons.addClass('disabled').removeClass('enabled')
       obj.find('[data-vote-toggle="tooltip"]').attr('data-original-title', _reason == undefined ? 'Voting period has ended' : _reason)
+
+      if (_reason == undefined) {
+        buttons.attr('data-mask', 'voting_has_ended')
+      } else if (_reason == 'Self-voting is not permitted') {
+        buttons.attr('data-mask', 'self_vote_disabled')
+      } else {
+        buttons.attr('data-mask', 'insufficient_karma')
+      }
     }
 
     if ($('#slider-' + id).length == 0) {
@@ -196,6 +204,14 @@ var layout = function() {
             setTimeout(function() {
               $('#slider-' + id).hide(500)
             }, 2500)
+
+            buttons.attr('data-mask', 'has_voted')
+
+            if (slider.attr('data-vote-up') == 'true') {
+              voteup.attr('data-original-title', 'You upvoted').addClass('persisted')
+            } else {
+              votedown.attr('data-original-title', 'You downvoted').addClass('persisted')
+            }
             resolve(true)
           })
           
@@ -277,8 +293,30 @@ var layout = function() {
     }
   }
 
-  var update_karma = function(val) {
+  var update_karma = function(val, has_enough) {
     $('#karma-amount').text(val)
+    update_vote_capability(has_enough)
+  }
+
+  var update_vote_capability = function(has_enough) {
+    if (has_enough === true) {
+      $('[data-mask="insufficient_karma"]')
+        .removeClass('disabled')
+        .addClass('enabled')
+        .attr('data-mask', 'voteable')
+    } else {
+      let message
+
+      switch(has_enough) {
+        case 'insufficient_karma': message = 'Insufficient karma'; break
+        case 'insufficient_pending_karma': message = 'Insufficient pending karma'; break
+      }
+      $('[data-mask="voteable"]')
+        .removeClass('enabled')
+        .addClass('disabled')
+        .attr('data-mask', 'insufficient_karma')
+        .attr('data-original-title', message)
+    }
   }
 
   var exec_test = function() {
