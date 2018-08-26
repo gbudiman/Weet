@@ -90,6 +90,7 @@ body {
     border-top: 1px solid $gray-light;
     height: 36px;
 
+
     .vote {
       height: 35px;
       padding: 8px;
@@ -97,6 +98,10 @@ body {
       border-right: 1px solid $gray-light;
       border-left: 1px solid $gray-light;
       margin-left: -1px;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
     }
 
     .voteup.persisted {
@@ -153,6 +158,10 @@ body {
         margin-top: 8px;
         z-index: 11;
         color: $black;
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
       }
     }
 
@@ -194,6 +203,10 @@ body {
       color: white;
       text-align: center;
       border-bottom-right-radius: 4px;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
     }
 
     .approve-status.weet-approved {

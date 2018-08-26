@@ -1,4 +1,6 @@
 class UserController < ApplicationController
+  before_action :authenticate_user!, except: [:has_enough_karma]
+  
   def edit_name
     begin
       User.edit_name id: params[:pk].to_i, value: params[:value]
@@ -19,6 +21,10 @@ class UserController < ApplicationController
   end
 
   def has_enough_karma
-    render json: User.find(current_user.id).has_enough_karma
+    if current_user
+      render json: User.find(current_user.id).has_enough_karma
+    else
+      render json: { error: :user_not_logged_in }
+    end
   end
 end

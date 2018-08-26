@@ -1,4 +1,6 @@
 class WeeetController < ApplicationController
+  before_action :authenticate_user!, only: [:send_vote, :post_weet]
+
   def index
     @current_user = current_user
   end

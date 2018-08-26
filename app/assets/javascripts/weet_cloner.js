@@ -99,12 +99,17 @@ var weet_cloner = function() {
         id: id
       }
     }).done(res => {
-      clone(res, 'prepend')
+      get_karma().then(function() {
+        clone(res, 'prepend')  
+      })
+      
     })
   }
 
   var clone = function(weet, _mode) {
     let mode = _mode == undefined ? 'append' : _mode
+
+    if ($('[data-id=' + weet.id + ']').length > 0) return
 
     if (mode == 'prepend' || (oldest_content == undefined || weet.id < oldest_content)) {
       let cloned = template.clone()

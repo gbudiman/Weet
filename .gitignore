@@ -64,3 +64,6 @@ config/development/*.sol.js
 config/test/contracts.json
 build
 dist
+
+# Ignore application configuration
+/config/application.yml

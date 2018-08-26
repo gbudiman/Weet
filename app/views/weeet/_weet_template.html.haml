@@ -7,12 +7,13 @@
   %div{class: 'weet-body'}
     Hi this is post body
   %div{class: 'weet-footer'}
-    %div{class: 'col-sm-1 col-xs-2 vote voteup disabled start-hidden', 'data-vote-toggle': 'tooltip', title: 'Fetching vote info...', 'data-upvote': 'true'}
-      %span{class: 'glyphicon glyphicon-arrow-up'}
-      %span{class: 'voteup-count'} 0
+    
     %div{class: 'col-sm-1 col-xs-2 vote votedown disabled start-hidden', 'data-vote-toggle': 'tooltip', title: 'Fetching vote info...', 'data-upvote': 'false'}
-      %span{class: 'glyphicon glyphicon-arrow-down'}
+      %span{class: 'glyphicon glyphicon-thumbs-down'}
       %span{class: 'votedown-count'} 0
+    %div{class: 'col-sm-1 col-xs-2 vote voteup disabled start-hidden', 'data-vote-toggle': 'tooltip', title: 'Fetching vote info...', 'data-upvote': 'true'}
+      %span{class: 'glyphicon glyphicon-thumbs-up'}
+      %span{class: 'voteup-count'} 0
     %div{class: 'col-sm-8 col-xs-5 slider start-hidden'}
     %div{class: 'col-sm-2 col-xs-3 timer-container start-hidden pull-right', 'data-vote-remainder-toggle': 'tooltip', title: 'Voting time remaining'}
       %div{class: 'timer-bar'}

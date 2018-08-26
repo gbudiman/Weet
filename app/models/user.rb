@@ -144,7 +144,7 @@ class User < ApplicationRecord
     self.karma = self.karma - 10
 
     if self.karma == 0
-      fill_time = Time.now + 1.day
+      fill_time = ENV['mode'] == 'fast' ? (Time.now + 1.minute) : (Time.now + 1.day)
       self.karma_fill_time = fill_time
       EvaluatorWorker.perform_at(fill_time, 'evaluate')
       EvaluatorWorker.perform_at(fill_time + 5.seconds, 'evaluate')

@@ -125,7 +125,7 @@ class Weeet < ApplicationRecord
 
 private
   def add_evaluate_at
-    evaluate_time = Time.now + 1.hour
+    evaluate_time = ENV['mode'] == 'fast' ? (Time.now + 10.minute) : (Time.now + 1.hour)
     self.evaluate_at = evaluate_time
     EvaluatorWorker.perform_at(evaluate_time, 'evaluate')
     EvaluatorWorker.perform_at(evaluate_time + 5.seconds, 'evaluate')
