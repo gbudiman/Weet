@@ -7,6 +7,9 @@ var weet_cloner = function() {
   let is_fetching
   let oldest_reached
 
+  let has_enough_karma
+  let karma_deprivation_reason
+
   var init = function() {
     template = $('#weet-template')
     feed = $('#feed')
@@ -14,6 +17,8 @@ var weet_cloner = function() {
     is_fetching = false
     oldest_reached = false
     oldest_content = undefined
+    has_enough_karma = false
+    karma_deprivation_reason = 'Karma uninitialized'
     attach_window_events()
   }
 
@@ -34,7 +39,34 @@ var weet_cloner = function() {
       
     })
 
-    fetch()
+    get_karma().then(function() {
+      fetch()  
+    })
+  }
+
+  var get_karma = function() {
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        method: 'GET',
+        url: '/user/has_enough_karma'
+      }).done(res => {
+        if (res === true) {
+          has_enough_karma = true
+          karma_deprivation_reason = null
+        } else {
+          has_enough_karma = false
+          switch(res) {
+          case 'insufficient_karma': 
+            karma_deprivation_reason = 'Not enough karma'
+            break
+          case 'insufficient_pending_karma':
+            karma_deprivation_reason = 'Not enough karma due to pending votes'
+            break
+          }
+        }
+        resolve(true)
+      })
+    })
   }
 
   var fetch = function() {
@@ -92,7 +124,13 @@ var weet_cloner = function() {
         layout.enable_vote(weet.id, false)
       } else {
         layout.set_vote_timer(weet.id, moment(weet.weet_evaluate_at))
-        layout.enable_vote(weet.id, weet.weeter_id != current_user_id, 'Self-voting is not permitted')
+
+        console.log(has_enough_karma)
+        if (has_enough_karma) {
+          layout.enable_vote(weet.id, weet.weeter_id != current_user_id, 'Self-voting is not permitted')
+        } else {
+          layout.enable_vote(weet.id, false, karma_deprivation_reason)
+        }
       }
       
       if (mode == 'append') {

@@ -251,6 +251,7 @@ var layout = function() {
           timing_task(obj, until)
         }, 1000)
       } else {
+        obj.parent().parent().find('.slider').hide(400)
         timer_text.text('Calculating...')
         enable_vote(id, false)
       }

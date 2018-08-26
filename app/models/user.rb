@@ -78,6 +78,20 @@ class User < ApplicationRecord
     end
   end
 
+  def has_enough_karma
+    return :insufficient_karma if self.karma == 0
+      
+    pendings = User.joins(votes: :weeet)
+                   .where(id: self.id)
+                   .where('weeets.is_evaluated' => false)
+
+    if pendings.count * 10 >= self.karma
+      return :insufficient_pending_karma
+    end
+
+    return true
+  end
+
   def weet! content:
     w = Weeet.create content: content, user_id: self.id
     ActionCable.server.broadcast 'weeet_channel', { action: :new_weet, id: w.id }

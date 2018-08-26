@@ -17,4 +17,8 @@ class UserController < ApplicationController
   def fetch_activity
     render json: User.get_activity(id: params[:id].to_i)
   end
+
+  def has_enough_karma
+    render json: User.find(current_user.id).has_enough_karma
+  end
 end

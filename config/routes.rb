@@ -20,4 +20,5 @@ Rails.application.routes.draw do
   post     '/edit_name',                       to: 'user#edit_name'
   get      '/user/activity',                   to: 'user#activity'
   get      '/user/fetch_activity',             to: 'user#fetch_activity'
+  get      '/user/has_enough_karma',           to: 'user#has_enough_karma'
 end
