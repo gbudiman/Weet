@@ -237,7 +237,7 @@ var layout = function() {
     let author_obj = obj.find('.weet-author').find('a')
 
     author_obj.text(author).attr('href', '/user/activity?id=' + author_id).attr('data-author-id', author_id)
-    obj.find('.weet-date').text(date)
+    obj.find('.weet-date').text(moment(date).toDate().toLocaleString())
     obj.find('.weet-body').text(content)
     enable_tooltips(id)
   }

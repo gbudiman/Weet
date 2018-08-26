@@ -105,6 +105,7 @@ class User < ApplicationRecord
                                                     val: Weeet.joins(:votes)
                                                               .where('votes.weeet_id' => weet_id)
                                                               .where('votes.voteup' => true).count}
+    ActionCable.server.broadcast "weeet_channel_#{self.id}", { action: :karma_changed, val: self.karma, has_enough: has_enough_karma }                                                              
   end
 
   def downvote weet_id:
@@ -114,6 +115,7 @@ class User < ApplicationRecord
                                                     val: Weeet.joins(:votes)
                                                               .where('votes.weeet_id' => weet_id)
                                                               .where('votes.voteup' => false).count}
+    ActionCable.server.broadcast "weeet_channel_#{self.id}", { action: :karma_changed, val: self.karma, has_enough: has_enough_karma }                                                              
   end
 
   def reset!
