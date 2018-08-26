@@ -51,7 +51,7 @@ class User < ApplicationRecord
                    .limit(25)
 
       votes = Vote.joins(:weeet)
-                  .joins(:user)
+                  .joins('INNER JOIN users ON weeets.user_id = users.id')
                   .where(user_id: id)
                   .select('weeets.content AS weet_content')
                   .select('weeets.is_evaluated AS weet_is_evaluated')

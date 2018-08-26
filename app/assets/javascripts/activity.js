@@ -23,11 +23,13 @@ var activity = function() {
 
         let w = ''
         res.weets.forEach(weet => {
-          let eval_state = weet.is_evaluated ? (weet.is_published ? 'Published' : 'Rejected') : 'Pending'
+          let eval_state = weet.weet_is_evaluated ? (weet.weet_is_published ? '<td class="voteup">Published</td>' 
+                                                                            : '<td class="votedown">Rejected</td>') 
+                                                  : '<td>Pending</td>'
           w += '<tr>'
             +    '<td>' + weet.weet_date + '</td>'
             +    '<td>' + snip(weet.weet_content) + '</td>'
-            +    '<td>' + eval_state + '</td>'
+            +    eval_state
             +  '</tr>'
         })
 
