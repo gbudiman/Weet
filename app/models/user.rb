@@ -68,7 +68,8 @@ class User < ApplicationRecord
         karma: user.karma,
         winning_streak: user.winning_streak,
         name: user.name,
-        email: user.email
+        email: user.email,
+        refill: user.karma_fill_time
       }
     rescue ActiveRecord::RecordNotFound
       return {
@@ -128,10 +129,21 @@ class User < ApplicationRecord
     self.karma = self.karma - 10
 
     if self.karma == 0
-      self.karma_fill_time = Time.now + 1.day
+      fill_time = Time.now + 1.minute
+      self.karma_fill_time = fill_time
+      EvaluatorWorker.perform_at(fill_time, 'evaluate')
+      EvaluatorWorker.perform_at(fill_time + 5.seconds, 'evaluate')
     end
     self.save!
     ActionCable.server.broadcast "weeet_channel_#{self.id}", { action: :karma_changed, val: self.karma }
+  end
+
+  def self.mass_refill
+    count = 0
+    User.where('karma_fill_time <= :t', t: Time.now).each do |user|
+      user.refill_karma!
+      count = count + 1
+    end
   end
 
   def refill_karma!

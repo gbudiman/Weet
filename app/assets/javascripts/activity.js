@@ -15,11 +15,13 @@ var activity = function() {
         $('#user-streak').text('???')
         $('#user-weets').append('<tr><td colspan=3>Invalid user ID...')
         $('#user-votes').append('<tr><td colspan=4>Invalid user ID...')
+        $('#karma-refill').text('???')
       } else {
         $('#karma-point').text(res.karma)
         $('#user-name').text(res.name)
         $('#user-email').text(res.email)
         $('#user-streak').text(res.winning_streak)
+        $('#karma-refill').text(res.refill == null ? 'Not scheduled' : moment(res.refill).fromNow())
 
         let w = ''
         res.weets.forEach(weet => {
