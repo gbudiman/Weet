@@ -10,6 +10,7 @@ class UserController < ApplicationController
   end
 
   def activity
+    @current_user = current_user
     @id = params[:id].to_i
   end
 

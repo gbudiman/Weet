@@ -121,6 +121,7 @@ class User < ApplicationRecord
     # end
 
     self.save!
+    ActionCable.server.broadcast "weeet_channel_#{self.id}", { action: :karma_changed, val: self.karma }
   end
 
   def lose!
@@ -130,6 +131,7 @@ class User < ApplicationRecord
       self.karma_fill_time = Time.now + 1.day
     end
     self.save!
+    ActionCable.server.broadcast "weeet_channel_#{self.id}", { action: :karma_changed, val: self.karma }
   end
 
   def refill_karma!
@@ -139,5 +141,6 @@ class User < ApplicationRecord
     end
 
     self.save!
+    ActionCable.server.broadcast "weeet_channel_#{self.id}", { action: :karma_changed, val: self.karma } 
   end
 end

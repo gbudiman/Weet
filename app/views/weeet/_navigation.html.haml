@@ -8,8 +8,13 @@
           %a{href: '#', class: 'not-clickable'}
             %span{class: 'glyphicon glyphicon-heart'} 
             %span{id: 'karma-amount'}= @current_user.karma
+        
+        
         %li{class: 'only-logged-in'}
           %a{href: '#', id: 'navbar-user-name', 'data-pk': "#{@current_user.id}"}= @current_user.name
+        %li{class: 'only-logged-in', 'data-toggle': 'tooltip', 'data-placement': 'bottom', title: 'See Activities'}
+          %a{href: "/user/activity?id=#{@current_user.id}"}
+            %span{class: 'glyphicon glyphicon-question-sign'}
         %li{class: 'only-logged-in signout-hover', 'data-toggle': 'tooltip', 'data-placement': 'bottom', title: 'Sign Out'}
           = link_to(raw('<span class="glyphicon glyphicon-off" />'), destroy_user_session_path, method: :delete)
       - else

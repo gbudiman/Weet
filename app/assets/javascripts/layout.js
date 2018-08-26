@@ -276,6 +276,10 @@ var layout = function() {
     }
   }
 
+  var update_karma = function(val) {
+    $('#karma-amount').text(val)
+  }
+
   var exec_test = function() {
     // enable_tooltips(-1)
     // set_vote_timer(-1, moment().add(45, 'minutes'))
@@ -288,6 +292,9 @@ var layout = function() {
     set_vote_timer: set_vote_timer,
     set_content: set_content,
     set_blockchain_persisted: set_blockchain_persisted,
-    update_vote: update_vote
+    update_vote: update_vote,
+    update_karma: update_karma,
+    initialize_tooltips: initialize_tooltips,
+    initialize_editable: initialize_editable
   }
 }()

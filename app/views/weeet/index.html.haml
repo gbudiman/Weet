@@ -22,7 +22,7 @@
 
 :javascript
   var scripts_loaded = false
-  var current_user_id = "#{current_user ? current_user.id : -1}"
+  var current_user_id = "#{@current_user ? @current_user.id : -1}"
   $(document).on('turbolinks:load', function() {
     if (!scripts_loaded) {
       layout.init()

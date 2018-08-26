@@ -28,15 +28,19 @@
       %th{style: 'width: 36px'} Vote
   %tbody{id: 'user-votes'}
 
+= stylesheet_link_tag 'bootstrap-editable'
 = stylesheet_link_tag 'weeet'
 = stylesheet_link_tag 'activity'
 
 :javascript
   var user_scripts_loaded = false
   var user_id = "#{@id}"
+  var current_user_id = "#{@current_user ? @current_user.id : -1}"
   $(document).on('turbolinks:load', function() {
     if (!user_scripts_loaded) {
       activity.init()
+      layout.initialize_tooltips()
+      layout.initialize_editable()
       user_scripts_loaded = true
     }
   })

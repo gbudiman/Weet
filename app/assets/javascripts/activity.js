@@ -59,7 +59,28 @@ var activity = function() {
     return ret + (x.length > snip_limit ? '...' : '')
   }
 
+  var update_karma = function(id, x) {
+    if (user_id == id) {
+      $('#karma-point').text(x)
+    }
+  }
+
+  var update_streak = function(id, x) {
+    if (user_id == id) {
+      $('#user-streak').text(x)
+    }
+  }
+
+  var update_name = function(id, x) {
+    if (user_id == id) {
+      $('#user-name').text(x)
+    }
+  }
+
   return {
-    init: init
+    init: init,
+    update_karma: update_karma,
+    update_streak: update_streak,
+    update_name: update_name
   }
 }()
