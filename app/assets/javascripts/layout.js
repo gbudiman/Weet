@@ -94,7 +94,6 @@ var layout = function() {
 
   var update_author_name = function(id, val) {
     let x = $('[data-author-id=' + id + ']')
-    console.log(x)
     x.text(val)
   }
 
@@ -243,8 +242,19 @@ var layout = function() {
   var set_content = function(id, author_id, author, date, content) {
     let obj = get(id)
     let author_obj = obj.find('.weet-author').find('a')
+    let author_text = author
 
-    author_obj.text(author).attr('href', '/user/activity?id=' + author_id).attr('data-author-id', author_id)
+    if (author_id == current_user_id) {
+      //obj.find('.weet-header').addClass('my-weet')
+      author_text += ' (me)'
+      author_obj.addClass('not-clickable').on('click', event => {
+        event.preventDefault()
+      })
+    } else {
+      author_obj.attr('href', '/user/activity?id=' + author_id)
+    }
+
+    author_obj.text(author_text).attr('data-author-id', author_id)
     obj.find('.weet-date').text(moment(date).toDate().toLocaleString())
     obj.find('.weet-body').text(content)
     enable_tooltips(id)
