@@ -27,6 +27,7 @@ contract WeetFactory {
   }
 
   function upload_weet(uint64 _b_weet_id, uint64 _b_weeter_id, uint64 _timestamp, string _weet) external only_admin {
+    require(backend_to_weet[_b_weet_id].weeter_id == 0);
     bytes32 checksum = get_checksum(_b_weeter_id, _timestamp, _weet);
     weeter_to_weet[_b_weeter_id][_b_weet_id] = Weet(false, _b_weeter_id, _timestamp, checksum, _weet);
     backend_to_weet[_b_weet_id] = weeter_to_weet[_b_weeter_id][_b_weet_id];
