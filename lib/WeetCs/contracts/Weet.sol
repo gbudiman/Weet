@@ -13,11 +13,13 @@ contract WeetFactory {
   }
 
 
-  mapping ( uint256 => Weet ) backend_to_weet;
-  mapping ( uint256 => mapping ( uint256 => Weet ) ) weeter_to_weet;
-  mapping ( uint256 => uint32 ) public weeter_stat;
+  mapping ( uint64 => Weet ) backend_to_weet;
+  mapping ( uint64 => mapping ( uint64 => Weet ) ) weeter_to_weet;
+  mapping ( uint64 => uint32 ) public weeter_stat;
 
   address public address_admin = msg.sender;
+  uint64 public weet_count = 0;
+  uint64[] public weets;
 
   modifier only_admin() {
     require(msg.sender == address_admin);
@@ -29,6 +31,8 @@ contract WeetFactory {
     weeter_to_weet[_b_weeter_id][_b_weet_id] = Weet(false, _b_weeter_id, _timestamp, checksum, _weet);
     backend_to_weet[_b_weet_id] = weeter_to_weet[_b_weeter_id][_b_weet_id];
     weeter_stat[_b_weeter_id]++;
+    weets.push(_b_weet_id);
+    weet_count++;
 
     emit WeetCreated(_b_weet_id, _b_weeter_id);
   }
