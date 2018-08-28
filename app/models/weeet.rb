@@ -127,9 +127,8 @@ class Weeet < ApplicationRecord
                                                       id: self.id,
                                                       val: self.is_published }
 
-      if self.is_published
-        Blockchain.publish weet: self
-      end
+      
+      Blockchain.publish weet: self, val: self.is_published
     end
   end
 

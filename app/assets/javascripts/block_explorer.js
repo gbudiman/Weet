@@ -1,6 +1,6 @@
 var block_explorer = function() {
   const infura_key = '6647daa5d5b541958f75ef76dd670221'
-  const contract_address = '0x270217dba3d133c09483528753a39136ea848c7d'
+  const contract_address = '0x03bd462c79013e3215b605d6190326a7f6ce8065'
   const fetch_amount = 5
   var web3
 
@@ -88,10 +88,19 @@ var block_explorer = function() {
           row.find('.weeter-id').text(a[1])
           row.find('.content').text(a[3])
 
+          let state = row.find('.state')
+
           if (a[4] == true) {
-            let state = row.find('.state')
-            state.text('Published')
-            state.addClass('published')
+            if (a[5] == true) {
+              
+              state.text('Published')
+              state.addClass('published')
+            } else {
+              state.text('Rejected')
+              state.addClass('rejected')
+            }
+          } else {
+            state.text('Pending...')
           }
 
           delete promises[xi]

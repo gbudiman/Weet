@@ -4,7 +4,7 @@ require 'concurrent'
 class Blockchain < ApplicationRecord
   belongs_to :weeet
   validates :weeet, presence: true
-  enum command: [ :upload, :publish ]
+  enum command: [ :upload, :publish, :rejex ]
 
   def self.get_lock
     return Config.find_by(key: 'blockchain_lock')
@@ -33,8 +33,8 @@ class Blockchain < ApplicationRecord
     trigger_jobs
   end
 
-  def self.publish weet:
-    Blockchain.create weeet_id: weet.id, command: :publish
+  def self.publish weet:, val:
+    Blockchain.create weeet_id: weet.id, command: (val ? :publish : :rejex )
     trigger_jobs
   end
 
@@ -71,13 +71,16 @@ class Blockchain < ApplicationRecord
       stdout.each_line do |line|
         print("OUT> #{line}")
         if line.match(/ SYNC COMPLETED\!/)
-          ref.update(executed: true)
-          if task == 'upload'
-            weet.persisted_on_blockchain = true
-            weet.save!
+          ActiveRecord::Base.transaction do
+            ref.update(executed: true)
+            if task == 'upload'
+              weet.persisted_on_blockchain = true
+              weet.save!
+            end
+            
+            release_lock
           end
-          
-          release_lock
+
           trigger_jobs
         end
         

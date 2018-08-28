@@ -253,6 +253,11 @@ body {
     background-color: $vote-up;
     color: white;
   }
+
+  .state.rejected {
+    background-color: $vote-down;
+    color: white;
+  }
 }
 
 @media screen and (max-width: 991px) {

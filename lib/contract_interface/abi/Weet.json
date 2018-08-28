@@ -95,20 +95,6 @@
     "type": "function"
   },
   {
-    "constant": true,
-    "inputs": [],
-    "name": "weet_count",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint64"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "constant": false,
     "inputs": [
       {
@@ -126,12 +112,30 @@
       {
         "name": "_weet",
         "type": "string"
+      },
+      {
+        "name": "val",
+        "type": "bool"
       }
     ],
     "name": "publish_weet",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "weet_count",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint64"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -159,6 +163,10 @@
       {
         "name": "",
         "type": "string"
+      },
+      {
+        "name": "",
+        "type": "bool"
       },
       {
         "name": "",
