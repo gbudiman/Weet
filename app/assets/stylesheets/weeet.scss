@@ -46,6 +46,10 @@ body {
   width: 100%;
 }
 
+.button-refresh {
+  margin-top: 16px;
+}
+
 
 .weet-container {
   width: 100vw;
@@ -244,6 +248,13 @@ body {
   max-width: 224px;
 }
 
+.table.explorer {
+  .state.published {
+    background-color: $vote-up;
+    color: white;
+  }
+}
+
 @media screen and (max-width: 991px) {
   .weet-container {
     width: 90vw;
@@ -268,19 +279,18 @@ body {
     }
 
     .weet-footer {
+      font-size: 11px;
       .vote {
-        font-size: 11px;
+        
         padding: 11px 0px 10px 0px;
       }
 
       .approve-status {
-        font-size: 11px;
         padding: 11px 4px 10px 4px;
       }
 
       .timer-container {
         .timer-text {
-          font-size: 11px;
           padding: 11px 4px 10px 4px;
         }
       }

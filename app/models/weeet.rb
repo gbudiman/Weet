@@ -126,6 +126,10 @@ class Weeet < ApplicationRecord
       ActionCable.server.broadcast 'weeet_channel', { action: :weet_evaluated, 
                                                       id: self.id,
                                                       val: self.is_published }
+
+      if self.is_published
+        Blockchain.publish weet: self
+      end
     end
   end
 

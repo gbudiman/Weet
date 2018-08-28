@@ -99,6 +99,7 @@ class User < ApplicationRecord
   def weet! content:
     w = Weeet.create content: content, user_id: self.id
     ActionCable.server.broadcast 'weeet_channel', { action: :new_weet, id: w.id }
+    Blockchain.upload weet: w
     return w
   end
 

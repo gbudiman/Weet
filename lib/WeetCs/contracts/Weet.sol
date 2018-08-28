@@ -38,9 +38,9 @@ contract WeetFactory {
     emit WeetCreated(_b_weet_id, _b_weeter_id);
   }
 
-  function get_weet(uint64 _b_weet_id) external view returns(uint64, uint64, string, bool) {
+  function get_weet(uint64 _b_weet_id) external view returns(uint64, uint64, uint64, string, bool) {
     Weet memory weet = backend_to_weet[_b_weet_id];
-    return(weet.weeter_id, weet.timestamp, weet.content, weet.is_published);
+    return(_b_weet_id, weet.weeter_id, weet.timestamp, weet.content, weet.is_published);
   }
 
   function validate_weet(uint64 _b_weet_id, uint64 _b_weeter_id, uint64 _timestamp, string _weet) public view returns(bool) {
@@ -51,7 +51,7 @@ contract WeetFactory {
   }
 
   function publish_weet(uint64 _b_weet_id, uint64 _b_weeter_id, uint64 _timestamp, string _weet) external only_admin {
-    require(validate_weet(_b_weet_id, _b_weeter_id, _timestamp, _weet));
+    require(validate_weet(_b_weet_id, _b_weeter_id, _timestamp, _weet) == true);
     backend_to_weet[_b_weet_id].is_published = true;
     emit WeetPublished(_b_weet_id, _b_weeter_id);
   }

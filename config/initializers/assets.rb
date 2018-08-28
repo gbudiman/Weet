@@ -12,10 +12,12 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 # application.js, application.css, and all non-JS/CSS in the app/assets
 # folder are already added.
 Rails.application.config.assets.precompile += %w( activity.js
+                                                  block_explorer.js
                                                   bootstrap-editable.min.js
                                                   heartbeat.js
                                                   layout.js
                                                   slide-to-unlock.js
+                                                  web3.min.js
                                                   weet_cloner.js
                                                   activity.scss
                                                   bootstrap-editable.css

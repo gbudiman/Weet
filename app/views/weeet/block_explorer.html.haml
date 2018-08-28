@@ -1,0 +1,31 @@
+%div{class: 'pushdown'}
+%div
+  %div{class: 'pull-left'}
+    %h3 Block Explorer
+  %div{class: 'pull-right button-refresh', id: 'refresh'}
+    %button{class: 'btn btn-success'}
+      %span{class: 'glyphicon glyphicon-refresh'}
+      %span{class: 'text'} Refresh
+
+%table{class: 'table explorer'}
+  %thead
+    %tr
+      %th Timestamp
+      %th Weeter ID
+      %th Content
+      %th Published
+  %tbody{id: 'content'}
+  %tfoot
+    %tr
+      %td{colspan: 5} 
+        %button{class: 'btn btn-success', id: 'load-more', disabled: true} Loading...
+
+= stylesheet_link_tag 'weeet'
+
+:javascript
+  var blockx_loaded = false
+  $(document).on('turbolinks:load', function() {
+    if (!blockx_loaded) {
+      block_explorer.init()
+    }
+  })

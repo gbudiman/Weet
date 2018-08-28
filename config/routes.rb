@@ -21,4 +21,6 @@ Rails.application.routes.draw do
   get      '/user/activity',                   to: 'user#activity'
   get      '/user/fetch_activity',             to: 'user#fetch_activity'
   get      '/user/has_enough_karma',           to: 'user#has_enough_karma'
+  get      '/block_explorer',                  to: 'weeet#block_explorer'
+  get      '/abi',                             to: 'weeet#get_abi'
 end

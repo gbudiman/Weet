@@ -60,6 +60,7 @@ var layout = function() {
     })
 
     post_button.off('click').on('click', function() {
+      post_content.attr('disabled', true)
       $.ajax({
         method: 'POST',
         url: '/weet',
@@ -71,6 +72,8 @@ var layout = function() {
           post_content.val('')
           evaluate_length()
         }
+
+        post_content.attr('disabled', false)
       })
     })
 

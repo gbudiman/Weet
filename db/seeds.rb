@@ -8,4 +8,5 @@
 
 User.destroy_all
 User.seed
+Config.seed
 #Weeet.seed

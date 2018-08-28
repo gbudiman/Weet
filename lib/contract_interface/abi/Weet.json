@@ -154,6 +154,10 @@
       },
       {
         "name": "",
+        "type": "uint64"
+      },
+      {
+        "name": "",
         "type": "string"
       },
       {

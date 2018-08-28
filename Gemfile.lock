@@ -79,6 +79,8 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.0.5)
+    concurrent-ruby-ext (1.0.5)
+      concurrent-ruby (= 1.0.5)
     connection_pool (2.2.2)
     crass (1.0.4)
     devise (4.4.3)
@@ -289,6 +291,8 @@ DEPENDENCIES
   capybara (>= 2.15)
   chromedriver-helper
   coffee-rails (~> 4.2)
+  concurrent-ruby
+  concurrent-ruby-ext
   devise
   figaro
   haml-rails

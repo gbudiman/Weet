@@ -46,6 +46,8 @@ gem 'sidekiq'
 gem 'awesome_print'
 gem 'figaro'
 gem 'devise'
+gem 'concurrent-ruby'
+gem 'concurrent-ruby-ext'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

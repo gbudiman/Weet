@@ -78,14 +78,14 @@ var weet_cloner = function() {
         from: oldest_content
       }
     }).done(res => {
-      if (res.length == 0) {
+      if (res.length < 5) {
         oldest_reached = true
         border.text('No more Weet to display')
-      } else {
-        res.forEach(weet => {
-          clone(weet)
-        })
       }
+
+      res.forEach(weet => {
+        clone(weet)
+      })
 
       is_fetching = false
     })

@@ -5,6 +5,13 @@ class WeeetController < ApplicationController
     @current_user = current_user
   end
 
+  def block_explorer
+  end
+
+  def get_abi
+    render json: JSON.parse(IO.read(Rails.root.join('lib', 'contract_interface', 'abi', 'Weet.json').to_s))
+  end
+
   def heartbeat
   end
   
