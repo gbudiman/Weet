@@ -86,6 +86,22 @@ body {
     .blockchain-persisted {
       padding-left: 8px;
     }
+
+    .bc-verify {
+      cursor: pointer;
+    }
+
+    .bc-corrupted {
+      color: $vote-down;
+    }
+
+    .bc-verified {
+      color: $vote-up;
+    }
+
+    .glyphicon {
+      margin-left: 4px;
+    }
   }
 
   .weet-body {
@@ -285,6 +301,12 @@ body {
 
     .weet-footer {
       font-size: 11px;
+
+      .char-remaining {
+        //padding-top: 10px;
+        font-size: 14px;
+      }
+
       .vote {
         
         padding: 11px 0px 10px 0px;

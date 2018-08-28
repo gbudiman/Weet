@@ -23,9 +23,11 @@
 :javascript
   var scripts_loaded = false
   var current_user_id = "#{@current_user ? @current_user.id : -1}"
+  var skip_fetch = true
   $(document).on('turbolinks:load', function() {
     if (!scripts_loaded) {
       layout.init()
+      block_explorer.init(skip_fetch)
       weet_cloner.init()
       heartbeat.init()
       scripts_loaded = true

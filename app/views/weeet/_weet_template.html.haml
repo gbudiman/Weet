@@ -1,9 +1,14 @@
 %div{id: 'weet-template', class: 'weet-container start-hidden', 'data-id': -1}
   %div{class: 'weet-header'}
     %span{class: 'weet-author'} 
-      %a{href: '#'} Author
-    %span{class: 'blockchain-persisted glyphicon glyphicon-link pull-right start-hidden', 'data-bcp-toggle': 'tooltipe', title: 'Blockchain-persisted'} 
+      %a{href: '#'} Author 
+    %span{class: 'glyphicon glyphicon-eye-open bc-verify pull-right', 'data-blockchain-toggle': 'tooltip', title: 'Verify on Blockchain'}
+    %span{class: 'glyphicon glyphicon-eye-close bc-not-persisted start-hidden pull-right', 'data-blockchain-toggle': 'tooltip', title: 'Not yet persisted on Blockchain. Try again?'}
+    %span{class: 'glyphicon glyphicon-ok bc-verified start-hidden pull-right', 'data-blockchain-toggle': 'tooltip', title: 'Verified Post'}
+    %span{class: 'glyphicon glyphicon-remove bc-corrupted start-hidden pull-right', 'data-blockchain-toggle': 'tooltip', title: 'Corrupted Post'}
+    %span{class: 'glyphicon glyphicon-option-horizontal start-hidden bc-verifying pull-right', 'data-blockchain-toggle': 'tooltip', title: 'Verifying Post...'}
     %span{class: 'weet-date pull-right'} Date
+
   %div{class: 'weet-body'}
     Hi this is post body
   %div{class: 'weet-footer'}

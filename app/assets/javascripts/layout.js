@@ -235,6 +235,7 @@ var layout = function() {
 
     obj.find('[data-vote-toggle="tooltip"]').tooltip()
     obj.find('[data-vote-remainder-toggle="tooltip"]').tooltip()
+    obj.find('[data-blockchain-toggle="tooltip"]').tooltip()
   }
 
   var set_blockchain_persisted = function(id) {
@@ -261,6 +262,34 @@ var layout = function() {
     obj.find('.weet-date').text(moment(date).toDate().toLocaleString())
     obj.find('.weet-body').text(content)
     enable_tooltips(id)
+    enable_blockchain_interaction(id, author_id, date, content)
+  }
+
+  var enable_blockchain_interaction = function(id, author_id, date, content) {
+    let r = get(id)
+    let verifying_progress = r.find('.bc-verifying')
+
+    r.find('.bc-verify').on('click', function() {
+      $(this).hide()
+      verifying_progress.show()
+
+      block_explorer.validate_checksum(id, author_id, moment(date).unix(), content).then(valid => {
+        verifying_progress.hide()
+        if (valid) {
+          r.find('.bc-verified').show()
+        } else {
+          block_explorer.get_weet(id).then(a => {
+            console.log(a)
+            if (a[2] == 0) {
+              r.find('.bc-not-persisted').show()
+            } else {
+              r.find('.bc-corrupted').show()
+            }
+          })
+        }
+        
+      })
+    })
   }
 
   var set_vote_timer = function(id, until) {

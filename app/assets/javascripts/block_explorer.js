@@ -9,7 +9,8 @@ var block_explorer = function() {
   var table
   var refresh
 
-  var init = function() {
+  var init = function(_skip_fetch) {
+    let skip_fetch = _skip_fetch == undefined ? false : _skip_fetch
     web3 = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/' + infura_key))
     table = $('#content')
     refresh = $('#refresh')
@@ -24,7 +25,9 @@ var block_explorer = function() {
     }).done(abi => {
       contract = new web3.eth.Contract(abi, contract_address)
 
-      fetch()
+      if (!skip_fetch) {
+        fetch()
+      }
     })
   }
 
@@ -53,6 +56,14 @@ var block_explorer = function() {
     } else {
       fetch_from(id - 1)
     }
+  }
+
+  var get_weet = function(id) {
+    return new Promise((resolve, reject) => {
+      contract.methods.get_weet(id).call().then(a => {
+        resolve(a)
+      })
+    })
   }
 
   var fetch_from = async function(n) {
@@ -130,14 +141,18 @@ var block_explorer = function() {
   }
 
   var validate_checksum = function(id, weeter_id, timestamp, content) {
-    contract.methods.validate_weet(id, weeter_id, timestamp, content).call().then(n => {
-
-      console.log(n)
+    return new Promise((resolve, reject) => {
+      console.log('here')
+      contract.methods.validate_weet(id, weeter_id, timestamp, content).call().then(n => {
+        resolve(n)
+      })
     })
+    
   }
 
   return {
     init: init,
-    validate_checksum: validate_checksum
+    validate_checksum: validate_checksum,
+    get_weet: get_weet
   }
 }()
