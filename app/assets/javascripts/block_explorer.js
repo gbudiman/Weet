@@ -80,7 +80,7 @@ var block_explorer = function() {
     for (let i = n; i >= min_id; i--) {
       table
         .append('<tr data-iteration=' + i + '>'
-              +   '<td class="timestamp"></td>'
+              +   '<td class="timestamp">...</td>'
               +   '<td class="weeter-id"></td>'
               +   '<td class="content"></td>'
               +   '<td class="state"></td>'
