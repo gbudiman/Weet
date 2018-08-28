@@ -5,6 +5,7 @@ contract WeetFactory {
   event WeetPublished(uint64 weet_id, uint64 weeter_id);
 
   struct Weet {
+    bool is_evaluated;
     bool is_published;
     uint64 weeter_id;
     uint64 timestamp;
@@ -29,7 +30,7 @@ contract WeetFactory {
   function upload_weet(uint64 _b_weet_id, uint64 _b_weeter_id, uint64 _timestamp, string _weet) external only_admin {
     require(backend_to_weet[_b_weet_id].weeter_id == 0);
     bytes32 checksum = get_checksum(_b_weeter_id, _timestamp, _weet);
-    weeter_to_weet[_b_weeter_id][_b_weet_id] = Weet(false, _b_weeter_id, _timestamp, checksum, _weet);
+    weeter_to_weet[_b_weeter_id][_b_weet_id] = Weet(false, false, _b_weeter_id, _timestamp, checksum, _weet);
     backend_to_weet[_b_weet_id] = weeter_to_weet[_b_weeter_id][_b_weet_id];
     weeter_stat[_b_weeter_id]++;
     weets.push(_b_weet_id);
@@ -38,9 +39,9 @@ contract WeetFactory {
     emit WeetCreated(_b_weet_id, _b_weeter_id);
   }
 
-  function get_weet(uint64 _b_weet_id) external view returns(uint64, uint64, uint64, string, bool) {
+  function get_weet(uint64 _b_weet_id) external view returns(uint64, uint64, uint64, string, bool, bool) {
     Weet memory weet = backend_to_weet[_b_weet_id];
-    return(_b_weet_id, weet.weeter_id, weet.timestamp, weet.content, weet.is_published);
+    return(_b_weet_id, weet.weeter_id, weet.timestamp, weet.content, weet.is_evaluated, weet.is_published);
   }
 
   function validate_weet(uint64 _b_weet_id, uint64 _b_weeter_id, uint64 _timestamp, string _weet) public view returns(bool) {
@@ -50,11 +51,12 @@ contract WeetFactory {
     return checksum == compare;
   }
 
-  function publish_weet(uint64 _b_weet_id, uint64 _b_weeter_id, uint64 _timestamp, string _weet) external only_admin {
+  function publish_weet(uint64 _b_weet_id, uint64 _b_weeter_id, uint64 _timestamp, string _weet, bool val) external only_admin {
+    require(backend_to_weet[_b_weet_id].is_evaluated == false);
     require(validate_weet(_b_weet_id, _b_weeter_id, _timestamp, _weet) == true);
     Weet storage weet = backend_to_weet[_b_weet_id];
-    weet.is_published = true;
-    //backend_to_weet[_b_weet_id].is_published = true;
+    weet.is_evaluated = true;
+    weet.is_published = val;
     emit WeetPublished(_b_weet_id, _b_weeter_id);
   }
 
