@@ -37,7 +37,7 @@ RSpec.describe User, type: :model do
       expect(user.karma).to eq(init_karma + 70)
     end
 
-    it 'should clear karma fill time' do
+    it 'should not clear karma fill time when granted bonus from winning streak' do
       @user.karma = 10
       @user.lose!
       @user.save!
@@ -54,7 +54,7 @@ RSpec.describe User, type: :model do
   end
 
   context 'losing' do
-    it 'should lose 10 karma points' do
+    it 'should subtract 10 karma points and reset their streak count' do
       User.find(@user.id).update(winning_streak: 2)
       expect(User.find(@user.id).winning_streak).to eq 2
       3.times do

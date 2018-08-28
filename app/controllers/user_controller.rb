@@ -1,5 +1,5 @@
 class UserController < ApplicationController
-  before_action :authenticate_user!, except: [:has_enough_karma]
+  before_action :authenticate_user!, except: [:has_enough_karma, :get_names]
   
   def edit_name
     begin
@@ -18,6 +18,10 @@ class UserController < ApplicationController
 
   def fetch_activity
     render json: User.get_activity(id: params[:id].to_i)
+  end
+
+  def get_names
+    render json: User.where(id: params[:ids]).select('id, name').to_a
   end
 
   def has_enough_karma

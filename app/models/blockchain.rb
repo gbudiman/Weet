@@ -46,6 +46,7 @@ class Blockchain < ApplicationRecord
   end
 
   def self.trigger_jobs
+    return if Rails.env == 'test'
     Concurrent::Promise.execute do
       if acquire_lock
         tasks = get_workload

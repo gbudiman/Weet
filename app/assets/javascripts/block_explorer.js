@@ -1,40 +1,51 @@
 var block_explorer = function() {
-  const infura_key = '6647daa5d5b541958f75ef76dd670221'
-  const contract_address = '0x03bd462c79013e3215b605d6190326a7f6ce8065'
-  const fetch_amount = 5
+  const fetch_amount = 3
+  var infura_key
+  var contract_address
   var web3
-
-  var contract = null
+  var contract
   var earliest
   var table
   var refresh
+  var user_lut
 
   var init = function(_skip_fetch) {
     let skip_fetch = _skip_fetch == undefined ? false : _skip_fetch
-    web3 = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/' + infura_key))
     table = $('#content')
     refresh = $('#refresh')
     earliest = -1
-
-    attach_refresh()
-    attach_fetch_more()
+    user_lut = {}
 
     $.ajax({
-      url: '/abi',
+      url: '/contract_meta',
       method: 'GET'
-    }).done(abi => {
-      contract = new web3.eth.Contract(abi, contract_address)
+    }).done(res => {
+      infura_key = res.infura_key
+      contract_address = res.contract_address
+      web3 = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/' + infura_key))
 
-      if (!skip_fetch) {
-        fetch()
-      }
+      attach_refresh()
+      attach_fetch_more()
+
+      $.ajax({
+        url: '/abi',
+        method: 'GET'
+      }).done(abi => {
+        contract = new web3.eth.Contract(abi, contract_address)
+
+        if (!skip_fetch) {
+          fetch()
+        }
+      })
     })
+    
   }
 
   var attach_refresh = function() {
     refresh.on('click', function() {
       table.empty()
       earliest = -1
+      user_lut = {}
       fetch()
     })
   }
@@ -71,7 +82,7 @@ var block_explorer = function() {
     let min_id = Math.max(0, n - fetch_amount + 1)
     let promises = {}
 
-    console.log(n + '->' + min_id)
+    
     if (n < 0) {
       set_button_state('end_of_content')
       return
@@ -80,8 +91,9 @@ var block_explorer = function() {
     for (let i = n; i >= min_id; i--) {
       table
         .append('<tr data-iteration=' + i + '>'
-              +   '<td class="timestamp">...</td>'
-              +   '<td class="weeter-id"></td>'
+              +   '<td class="date">...</td>'
+              +   '<td class="time"></td>'
+              +   '<td class="weeter-id"><span class="text-id" /> <span class="text-name" /></td>'
               +   '<td class="content"></td>'
               +   '<td class="state"></td>'
               + '</tr>')
@@ -92,12 +104,22 @@ var block_explorer = function() {
         table.find('[data-iteration=' + i + ']').attr('data-id', id)
 
         contract.methods.get_weet(parseInt(id)).call().then(a => {
-          console.log(a)
           let row = table.find('[data-id=' + id + ']')
           let xi = parseInt(row.attr('data-iteration'))
-          row.find('.timestamp').text(moment(parseInt(a[2]) * 1000).toDate().toLocaleString())
-          row.find('.weeter-id').text(a[1])
+          let t = moment(parseInt(a[2]) * 1000).toDate()
+          let user_id = a[1]
+          row.find('.date').text(t.toLocaleDateString())
+          row.find('.time').text(t.toLocaleTimeString())
+          row.find('.weeter-id').attr('data-weeter-id', user_id)
+          row.find('.weeter-id').find('.text-id').text(user_id)
           row.find('.content').text(a[3])
+
+          let l = user_lut[user_id]
+          if (l == undefined) {
+            user_lut[user_id] = undefined
+          } else {
+            row.find('.weeter-id').find('.text-name').text(lut)
+          }
 
           let state = row.find('.state')
 
@@ -116,7 +138,7 @@ var block_explorer = function() {
 
           delete promises[xi]
           if (Object.keys(promises).length == 0) {
-            
+            populate_lut()
             if (n - fetch_amount < 0) {
               set_button_state('end_of_content')
             } else {
@@ -126,8 +148,32 @@ var block_explorer = function() {
         })
       })
     }
+  }
 
+  var populate_lut = function() {
+    let a = new Array()
+    console.log(user_lut)
+    $.each(user_lut, (k, v) => {
+      if (v == null) {
+        a.push(k)
+      }
+    })
 
+    $.ajax({
+      url: '/weeter_names',
+      method: 'GET',
+      data: {
+        ids: a
+      }
+    }).done(res => {
+      res.forEach(x => {
+        let id = x.id
+        let name = x.name
+
+        let r = table.find('[data-weeter-id=' + x.id + ']')
+        r.find('.text-name').text(x.name)
+      })
+    })
   }
 
   var set_button_state = function(state) {
@@ -142,7 +188,6 @@ var block_explorer = function() {
 
   var validate_checksum = function(id, weeter_id, timestamp, content) {
     return new Promise((resolve, reject) => {
-      console.log('here')
       contract.methods.validate_weet(id, weeter_id, timestamp, content).call().then(n => {
         resolve(n)
       })

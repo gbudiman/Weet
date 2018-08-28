@@ -46,4 +46,11 @@ class WeeetController < ApplicationController
     current_user.weet! content: params[:content]
     render json: { success: true }
   end
+
+  def get_contract_meta
+    render json: {
+      infura_key: ENV['infura_key'],
+      contract_address: ENV['contract_address']
+    }
+  end
 end
