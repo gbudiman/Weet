@@ -39,15 +39,16 @@ class Blockchain < ApplicationRecord
   end
 
   def self.get_workload
-    return Blockchain.where(executed: false).order(created_at: :asc).first
+    return Blockchain.where(executed: false).order(created_at: :asc)
   end
 
   def self.trigger_jobs
     Concurrent::Promise.execute do
       if acquire_lock
-        task = get_workload
+        tasks = get_workload
 
-        if task
+        if tasks.count > 0
+          task = tasks.first
           self.exec_task task: task.command, weet: Weeet.find(task.weeet_id), ref: task
         else
           release_lock
@@ -69,11 +70,11 @@ class Blockchain < ApplicationRecord
                  ENV['wallet_pk']) do |stdin, stdout, stderr|
       stdout.each_line do |line|
         print("OUT> #{line}")
-        if line.match(/status\: true/)
+        if line.match(/ SYNC COMPLETED\!/)
           ref.update(executed: true)
-
           if task == 'upload'
-            Weeet.find(task.weeet_id).update(persisted_on_blockchain: true)
+            weet.persisted_on_blockchain = true
+            weet.save!
           end
           
           release_lock

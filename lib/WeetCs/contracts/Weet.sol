@@ -52,7 +52,9 @@ contract WeetFactory {
 
   function publish_weet(uint64 _b_weet_id, uint64 _b_weeter_id, uint64 _timestamp, string _weet) external only_admin {
     require(validate_weet(_b_weet_id, _b_weeter_id, _timestamp, _weet) == true);
-    backend_to_weet[_b_weet_id].is_published = true;
+    Weet storage weet = backend_to_weet[_b_weet_id];
+    weet.is_published = true;
+    //backend_to_weet[_b_weet_id].is_published = true;
     emit WeetPublished(_b_weet_id, _b_weeter_id);
   }
 

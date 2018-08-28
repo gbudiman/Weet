@@ -1,7 +1,6 @@
 var block_explorer = function() {
-  console.log(Web3.providers)
   const infura_key = '6647daa5d5b541958f75ef76dd670221'
-  const contract_address = '0x724a3fe8d2ac13bf506f7102e5acd4c7a3e9002f'
+  const contract_address = '0x270217dba3d133c09483528753a39136ea848c7d'
   const fetch_amount = 5
   var web3
 
@@ -16,7 +15,8 @@ var block_explorer = function() {
     refresh = $('#refresh')
     earliest = -1
 
-    attach_refersh()
+    attach_refresh()
+    attach_fetch_more()
 
     $.ajax({
       url: '/abi',
@@ -28,10 +28,16 @@ var block_explorer = function() {
     })
   }
 
-  var attach_refersh = function() {
+  var attach_refresh = function() {
     refresh.on('click', function() {
       table.empty()
       earliest = -1
+      fetch()
+    })
+  }
+
+  var attach_fetch_more = function() {
+    $('#load-more').on('click', function() {
       fetch()
     })
   }
@@ -41,6 +47,7 @@ var block_explorer = function() {
     if (id == -1) {
 
       contract.methods.weet_count().call().then(n => {
+        earliest = n
         fetch_from(n - 1)
       })
     } else {
@@ -50,10 +57,10 @@ var block_explorer = function() {
 
   var fetch_from = async function(n) {
     set_button_state('is_fetching')
-    let min_id = Math.max(0, n - fetch_amount)
+    let min_id = Math.max(0, n - fetch_amount + 1)
     let promises = {}
 
-    //console.log(min_id)
+    console.log(n + '->' + min_id)
     if (n < 0) {
       set_button_state('end_of_content')
       return
@@ -74,13 +81,14 @@ var block_explorer = function() {
         table.find('[data-iteration=' + i + ']').attr('data-id', id)
 
         contract.methods.get_weet(parseInt(id)).call().then(a => {
+          console.log(a)
           let row = table.find('[data-id=' + id + ']')
           let xi = parseInt(row.attr('data-iteration'))
           row.find('.timestamp').text(moment(parseInt(a[2]) * 1000).toDate().toLocaleString())
           row.find('.weeter-id').text(a[1])
           row.find('.content').text(a[3])
 
-          if (a[3]) {
+          if (a[4] == true) {
             let state = row.find('.state')
             state.text('Published')
             state.addClass('published')

@@ -130,7 +130,6 @@ var weet_cloner = function() {
       } else {
         layout.set_vote_timer(weet.id, moment(weet.weet_evaluate_at))
 
-        console.log(has_enough_karma)
         if (has_enough_karma) {
           layout.enable_vote(weet.id, weet.weeter_id != current_user_id, 'Self-voting is not permitted')
         } else {

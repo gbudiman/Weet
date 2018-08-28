@@ -9,4 +9,5 @@
 User.destroy_all
 User.seed
 Config.seed
+Blockchain.destroy_all
 #Weeet.seed
