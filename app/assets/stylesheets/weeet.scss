@@ -91,6 +91,10 @@ body {
       cursor: pointer;
     }
 
+    .bc-not-persisted {
+      cursor: pointer;
+    }
+
     .bc-corrupted {
       color: $vote-down;
     }

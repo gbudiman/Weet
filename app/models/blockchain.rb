@@ -16,16 +16,19 @@ class Blockchain < ApplicationRecord
   end
 
   def self.acquire_lock
-    c = get_lock
-    if c.property == 'false'
-      c.property = 'true'
-      c.save!
+    lock_success = false
+    ActiveRecord::Base.transaction do
+      c = get_lock
+      if c.property == 'false'
+        c.property = 'true'
+        c.save!
 
-      ap 'lock acquired'
-      return true
+        ap 'lock acquired'
+        lock_success = true
+      end
     end
     
-    return false
+    return lock_success
   end
 
   def self.upload weet:
@@ -49,8 +52,11 @@ class Blockchain < ApplicationRecord
 
         if tasks.count > 0
           task = tasks.first
+          ap "Executing the following task:"
+          ap task
           self.exec_task task: task.command, weet: Weeet.find(task.weeet_id), ref: task
         else
+          ap "No more task remaining"
           release_lock
         end
       end
@@ -72,7 +78,10 @@ class Blockchain < ApplicationRecord
         print("OUT> #{line}")
         if line.match(/ SYNC COMPLETED\!/)
           ActiveRecord::Base.transaction do
-            ref.update(executed: true)
+            #ref.update(executed: true)
+            ref.executed = true
+            ref.is_successful = true
+            ref.save!
             if task == 'upload'
               weet.persisted_on_blockchain = true
               weet.save!
@@ -88,6 +97,16 @@ class Blockchain < ApplicationRecord
 
       stderr.each_line do |line|
         print("ERR> #{line}")
+        if line.match(/Unhandled promise rejection/)
+          ActiveRecord::Base.transaction do
+            ref.executed = true
+            ref.save!
+
+            release_lock
+          end
+
+          trigger_jobs
+        end
       end
     end
   end

@@ -269,8 +269,8 @@ var layout = function() {
     let r = get(id)
     let verifying_progress = r.find('.bc-verifying')
 
-    r.find('.bc-verify').on('click', function() {
-      $(this).hide()
+    var exec_verify = function(obj) {
+      obj.hide()
       verifying_progress.show()
 
       block_explorer.validate_checksum(id, author_id, moment(date).unix(), content).then(valid => {
@@ -279,7 +279,6 @@ var layout = function() {
           r.find('.bc-verified').show()
         } else {
           block_explorer.get_weet(id).then(a => {
-            console.log(a)
             if (a[2] == 0) {
               r.find('.bc-not-persisted').show()
             } else {
@@ -289,6 +288,14 @@ var layout = function() {
         }
         
       })
+    }
+
+    r.find('.bc-verify').on('click', function() {
+      exec_verify($(this))
+    })
+
+    r.find('.bc-not-persisted').on('click', function() {
+      exec_verify($(this))
     })
   }
 
