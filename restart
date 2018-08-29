@@ -1,5 +1,5 @@
 kill $(ps -eopid,cmd | grep -oP '(\d+)\s+sidekiq' | awk '{print $1}')
 kill $(ps -eopid,cmd | grep -oP '(\d+)\s+puma' | awk '{print $1}')
 puma -p 3000 -t 8:32 -e production -d
-bundle exec sidekiq -C sidekiq.yml -d
+bundle exec sidekiq -C config/sidekiq.yml -d
 ps -aux | egrep "(sidekiq|puma)"

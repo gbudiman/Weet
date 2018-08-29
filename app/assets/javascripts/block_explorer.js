@@ -1,5 +1,5 @@
 var block_explorer = function() {
-  const fetch_amount = 3
+  const fetch_amount = 10
   var infura_key
   var contract_address
   var web3
