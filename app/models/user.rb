@@ -178,4 +178,16 @@ class User < ApplicationRecord
     self.save!
     ActionCable.server.broadcast "weeet_channel_#{self.id}", { action: :karma_changed, val: self.karma, has_enough: has_enough_karma } 
   end
+
+  def self.admin_edit_refill id:
+    u = User.find id
+    fill_time = Time.now + 15.seconds
+    u.update(karma_fill_time: fill_time)
+    EvaluatorWorker.perform_at(fill_time, 'evaluate')
+    EvaluatorWorker.perform_at(fill_time + 5.seconds, 'evaluate')
+    return {
+      success: true,
+      fill_time: u.karma_fill_time
+    }
+  end
 end

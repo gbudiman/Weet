@@ -25,4 +25,9 @@ Rails.application.routes.draw do
   get      '/abi',                             to: 'weeet#get_abi'
   get      '/contract_meta',                   to: 'weeet#get_contract_meta'
   get      '/weeter_names',                    to: 'user#get_names'
+  get      '/backroom',                        to: 'admin#index'
+  get      '/weeters',                         to: 'admin#get_weeters'
+  post     '/edit/karma',                      to: 'admin#edit_karma'
+  post     '/edit/streak',                     to: 'admin#edit_streak'
+  post     '/edit/refill',                     to: 'admin#edit_refill'
 end
