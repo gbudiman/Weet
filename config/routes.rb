@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   get      '/user/has_enough_karma',           to: 'user#has_enough_karma'
   get      '/block_explorer',                  to: 'weeet#block_explorer'
   get      '/abi',                             to: 'weeet#get_abi'
+  get      '/socket',                          to: 'weeet#get_socket_config'
   get      '/contract_meta',                   to: 'weeet#get_contract_meta'
   get      '/weeter_names',                    to: 'user#get_names'
   get      '/backroom',                        to: 'admin#index'

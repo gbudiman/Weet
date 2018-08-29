@@ -12,6 +12,13 @@ class WeeetController < ApplicationController
     render json: JSON.parse(IO.read(Rails.root.join('lib', 'contract_interface', 'abi', 'Weet.json').to_s))
   end
 
+  def get_socket_config
+    render json: {
+      domain: request.domain,
+      port: request.port
+    }
+  end
+
   def heartbeat
   end
   

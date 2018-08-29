@@ -1,21 +1,29 @@
 var heartbeat = function() {
-  const cable = ActionCable.createConsumer('ws://localhost:2998/cable')
+  var cable
 
   var init = function() {
-    cable.subscriptions.create('WeeetChannel', {
-      connected: cable_connected,
-      received: cable_message
-    })
+    $.ajax({
+      method: 'GET',
+      url: '/socket'
+    }).done(res => {
+      cable = ActionCable.createConsumer('ws://' + res.domain + ':' + res.port + '/cable')
 
-    if (current_user_id != -1) {
-      cable.subscriptions.create({
-        channel: 'WeeetChannel',
-        user_id: current_user_id 
-      }, {
-        connected: user_connected,
-        received: user_message
+      cable.subscriptions.create('WeeetChannel', {
+        connected: cable_connected,
+        received: cable_message
       })
-    }
+
+      if (current_user_id != -1) {
+        cable.subscriptions.create({
+          channel: 'WeeetChannel',
+          user_id: current_user_id 
+        }, {
+          connected: user_connected,
+          received: user_message
+        })
+      }  
+    })
+    
   }
 
   var cable_connected = function(data) {
