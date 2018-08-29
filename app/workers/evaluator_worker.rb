@@ -12,6 +12,7 @@ class EvaluatorWorker
   def evaluate_weets
     Weeet.mass_evaluate
     User.mass_refill
+    Blockchain.trigger_jobs
   end
 
   def commit_to_blockchain
