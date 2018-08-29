@@ -22,6 +22,6 @@ Rails.application.config.assets.precompile += %w( activity.js
                                                   weet_cloner.js
                                                   activity.scss
                                                   backroom.scss
-                                                  bootstrap-editable.css
+                                                  bootstrap-editable.scss
                                                   slide-to-unlock.scss
                                                   weeet.scss )
