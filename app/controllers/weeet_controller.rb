@@ -14,7 +14,7 @@ class WeeetController < ApplicationController
 
   def get_socket_config
     render json: {
-      domain: request.domain,
+      domain: request.domain(n=99),
       port: request.port
     }
   end
