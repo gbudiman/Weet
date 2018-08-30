@@ -1,7 +1,9 @@
 %nav{class: 'navbar navbar-default navbar-fixed-top'}
   %div{class: 'container'}
     %div{class: 'navbar-header'}
-      %a{class: 'navbar-brand', href: '/'} Weet
+      %a{class: 'navbar-brand', href: '/'}<
+        Weet-
+        = ENV['mode']
     %ul{class: 'nav navbar-nav navbar-right'}
       - if @current_user
         %li{class: 'only-logged-in karma-hover', 'data-toggle': 'tooltip', 'data-placement': 'bottom'}
