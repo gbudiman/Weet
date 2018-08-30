@@ -163,10 +163,16 @@ var SlideToUnlock = function() {
   }
 
   var attach_bodily_functions = function() {
-    $('body').on('mousemove', function(event) {
+    $('body').on('mousemove touchmove', function(event) {
       if (current_object && mouse_state == 'down') {
-        var delta = event.pageX - mouse_init_x
 
+        let delta
+
+        if (event.type == 'touchmove') {
+          delta = event.touches[0].pageX - mouse_init_x
+        } else {
+          delta = event.pageX - mouse_init_x
+        }
         if (is_at_end(current_object)) {
           var container = current_object.parent().parent()[0]
           var fpos = current_object.parent().width() - current_object.width()
@@ -190,7 +196,7 @@ var SlideToUnlock = function() {
       }
     })
 
-    $('body').on('mouseup', function(event) {
+    $('body').on('mouseup touchend', function(event) {
       if (current_object && mouse_state == 'down') {
         mouse_state = 'up'
 
@@ -207,11 +213,17 @@ var SlideToUnlock = function() {
 
   var attach_drag = function() {
     var $this = $(this)
-    $(this).on('mousedown', function(event) {
+    $(this).on('mousedown touchstart', function(event) {
       if (mouse_state == 'up' && !$this.hasClass('disabled')) {
-        mouse_init_x = event.pageX
-        mouse_state = 'down' 
-        current_object = $this 
+        //console.log(event)
+        if (event.type == 'touchstart') {
+          mouse_init_x = event.touches[0].pageX
+        } else {
+          mouse_init_x = event.pageX
+        }
+
+        mouse_state = 'down'
+        current_object = $this
       }
     })
 
