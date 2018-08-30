@@ -7,6 +7,12 @@
       %span{class: 'glyphicon glyphicon-refresh'}
       %span{class: 'text'} Refresh
 
+%div{class: 'row'}
+%div
+  Contract:
+  %a{href: "//ropsten.etherscan.io/address/#{ENV['contract_address']}", target: '_etherscan'}
+    = ENV['contract_address']
+    %span{class: 'glyphicon glyphicon-new-window'}
 %table{class: 'table explorer'}
   %thead
     %tr
