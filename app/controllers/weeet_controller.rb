@@ -6,6 +6,7 @@ class WeeetController < ApplicationController
   end
 
   def block_explorer
+    @current_user = current_user
   end
 
   def get_abi
